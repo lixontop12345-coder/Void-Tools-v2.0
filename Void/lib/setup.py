@@ -9,7 +9,18 @@ from rich import box
 
 from . import constants as C
 from .config import get_settings
+from .remote import config_rev
 from .void_common import ansi_hex, cls, console, read_console_key
+
+
+def setup_required(force=False):
+    """First run, or new remote config_rev → re-ask lang / theme / username."""
+    if force:
+        return True
+    s = get_settings()
+    if not s.get("setup_complete"):
+        return True
+    return config_rev() != str(s.get("last_setup_config_rev", "0"))
 
 
 def _t(key, fr):
@@ -164,6 +175,7 @@ def _save(fr, s):
     console.print(Panel(Align.center(Text.from_markup(f"[bold {C.C_GOLD}]{_t('save', fr)}[/]")),
                         border_style=C.C_BLOOD))
     s.set("setup_complete", True)
+    s.set("last_setup_config_rev", config_rev())
     s.save()
 
 
@@ -183,7 +195,7 @@ def _outro(fr, s):
 
 def run_setup_wizard(force=False):
     s = get_settings()
-    if s.get("setup_complete") and not force:
+    if not setup_required(force):
         C.apply_theme(C._THEME_ALIASES.get(s.get("theme", "red"), s.get("theme", "red")))
         return
 

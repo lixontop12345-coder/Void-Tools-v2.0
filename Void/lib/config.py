@@ -9,6 +9,7 @@ DEFAULTS = {
     "username": "Operator",
     "skip_boot": False,
     "setup_complete": False,
+    "last_setup_config_rev": "0",
     "last_seen_config_rev": "0",
     "last_remote_sync": 0,
 }
