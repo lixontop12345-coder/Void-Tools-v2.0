@@ -9,7 +9,7 @@ from lib import constants as C
 
 from core import set_language, run_tool
 
-_TAG = C.DISCORD_TAG
+_TAG = getattr(C, "TELEGRAM_TAG", C.DISCORD_TAG)
 _VER = C.VERSION
 
 STRINGS = {

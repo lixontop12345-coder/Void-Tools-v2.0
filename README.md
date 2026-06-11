@@ -1,11 +1,11 @@
 <div align="center">
 
-# 🎉 VOID-TOOLS v2.3 — NEW DISCORD !
+# 🎉 VOID-TOOLS v2.4 — TELEGRAM !
 
 ### 150+ tools · 13 themes · auto-updates · bilingual UI · Rich terminal dashboard
 
-[![⬇ Download](https://img.shields.io/badge/⬇_Download-v2.3-FF2020?style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/archive/refs/heads/main.zip)
-[![Discord](https://img.shields.io/badge/Discord-discord.gg/dawa-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/dawa)
+[![⬇ Download](https://img.shields.io/badge/⬇_Download-v2.4-FF2020?style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/archive/refs/heads/main.zip)
+[![Telegram](https://img.shields.io/badge/Telegram-t.me/v0idtool-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/v0idtool)
 [![Shop](https://img.shields.io/badge/Shop-Premium-FFD700?style=for-the-badge&logo=shopify&logoColor=black)](https://void-tools.mysellauth.com/)
 
 <br>
@@ -22,7 +22,7 @@
 
 **Python terminal multitool · OSINT · Discord · Web · Network · Social · Roblox**
 
-[![Version](https://img.shields.io/badge/version-2.3.0-FF2020?style=for-the-badge&logo=semanticweb&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0)
+[![Version](https://img.shields.io/badge/version-2.4.0-FF2020?style=for-the-badge&logo=semanticweb&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0)
 [![Python](https://img.shields.io/badge/Python-3.11+-FF2020?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-AGPL--3.0-FF2020?style=for-the-badge)](Void/LICENSE)
 [![Stars](https://img.shields.io/github/stars/V0id-v2/Void-Tools-v2.0?color=FF2020&style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/stargazers)
@@ -55,7 +55,7 @@
 
 ## ✦ Overview
 
-**VOID-TOOLS v2.3** is a modular, keyboard-driven terminal suite built with **Python** and **Rich**.  
+**VOID-TOOLS v2.4** is a modular, keyboard-driven terminal suite built with **Python** and **Rich**.  
 One launcher · one dashboard · every tool sorted by category — free tools first, premium marked with a gold border.
 
 | | |
@@ -154,7 +154,7 @@ For **your own servers** or with explicit permission. Respects [Discord ToS](htt
 <br>
 
 **19 tools:** info, spam, GIF & bad-word spam, embed/JSON/file sender, ghost ping, editor, cloner, destroyer, curl generator, and more.  
-Branding `discord.gg/dawa` on sends.
+Branding `t.me/v0idtool` on sends.
 
 </details>
 
@@ -263,13 +263,20 @@ Discord, shop & GitHub links update via [`remote-manifest.json`](Void/config/rem
 
 ---
 
+## 🗺️ v2.4 highlights
+
+| ✅ | Feature |
+| - | --- |
+| ✅ | **Telegram community** — [t.me/v0idtool](https://t.me/v0idtool) |
+| ✅ | **Join screen** on startup · auto-opens Telegram |
+| ✅ | HOME · webhooks · branding migrated to Telegram |
+
 ## 🗺️ v2.3 highlights
 
 | ✅ | Feature |
 | - | --- |
-| ✅ | **NEW Discord** — [discord.gg/dawa](https://discord.gg/dawa) (old server down) |
-| ✅ | **Migration screen** on startup · auto-opens invite · blocks until Enter |
-| ✅ | All links, webhooks & branding updated |
+| ✅ | Community migration · mandatory join gate on boot |
+| ✅ | Centralized branding via `lib/constants` |
 
 ## 🗺️ v2.2 highlights
 
@@ -285,7 +292,7 @@ Discord, shop & GitHub links update via [`remote-manifest.json`](Void/config/rem
 | ✅ | Feature |
 | - | --- |
 | ✅ | **WEBHOOK** category — 19 tools (spam, GIF, ghost, destroyer…) |
-| ✅ | Branding `discord.gg/dawa` on webhook sends |
+| ✅ | Branding `t.me/v0idtool` on webhook sends |
 | ✅ | Discord User Lookup — snowflake + optional bot token (console) |
 | ✅ | Nuker — credentials in console, no config file required |
 
@@ -320,11 +327,11 @@ Discord, shop & GitHub links update via [`remote-manifest.json`](Void/config/rem
 <br>
 
 [![⭐ Star](https://img.shields.io/badge/⭐_STAR_FOR_UPDATES-FF2020?style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/stargazers)
-[![Discord](https://img.shields.io/badge/Join-discord.gg/dawa-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/dawa)
+[![Telegram](https://img.shields.io/badge/Join-t.me/v0idtool-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/v0idtool)
 [![Shop](https://img.shields.io/badge/Get-Premium-FFD700?style=for-the-badge&logo=shopify&logoColor=black)](https://void-tools.mysellauth.com/)
 
 <br>
 
-<sub>VOID-TOOLS v2.3 · discord.gg/dawa · Educational use only</sub>
+<sub>VOID-TOOLS v2.4 · t.me/v0idtool · Educational use only</sub>
 
 </div>

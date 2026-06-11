@@ -54,7 +54,7 @@ EMBED_CONFIG = {
     "image"      : "https://media.discordapp.net/attachments/1471977538648674478/1477637266791727155/c51ca65be8fa86b4b8f29a7d15dce335_1.webp",
     "footer"     : f"{DISCORD_TAG}  |  github.com/v0id4real",
     "fields"     : [
-        {"name": "\U0001f517 __Discord__", "value": f"**{DISCORD_TAG}**", "inline": True},
+        {"name": "\U0001f4f1 __Telegram__", "value": f"**{DISCORD_TAG}**", "inline": True},
         {"name": "\U0001f431 __Github__",  "value": "**github.com/v0id4real**",   "inline": True},
         {"name": "\u26a1 __Tool__",        "value": "**VOID-NUKE v1.0.0**",       "inline": True},
     ],

@@ -89,11 +89,17 @@ def config_rev():
 
 
 def apply_overrides(manifest=None):
-    """Applique Discord + GitHub (site) + changelog."""
+    """Applique Telegram / GitHub / shop + changelog."""
     m = manifest or get_manifest()
     links = m.get("links") or {}
-    if links.get("discord"):
-        C.DISCORD = str(links["discord"]).strip()
+    community = links.get("telegram") or links.get("discord")
+    if community:
+        url = str(community).strip()
+        C.TELEGRAM = url
+        C.DISCORD = url
+        tag = url.replace("https://", "").replace("http://", "")
+        C.TELEGRAM_TAG = tag
+        C.DISCORD_TAG = tag
     if links.get("github"):
         C.GITHUB = str(links["github"]).strip()
     if links.get("shop"):
@@ -168,46 +174,47 @@ def _norm_invite(url):
 
 
 def discord_join_pending():
-    """True si l'utilisateur n'a pas encore validé le lien Discord actuel."""
+    """True si l'utilisateur n'a pas encore validé le lien communauté actuel."""
     s = get_settings()
-    current = _norm_invite(C.DISCORD)
+    current = _norm_invite(getattr(C, "TELEGRAM", C.DISCORD))
     seen = _norm_invite(s.get("last_seen_discord_invite", ""))
     return bool(current) and current != seen
 
 
 def mark_discord_join_seen():
     s = get_settings()
-    s.set("last_seen_discord_invite", C.DISCORD)
+    s.set("last_seen_discord_invite", getattr(C, "TELEGRAM", C.DISCORD))
     s.save()
 
 
 def show_discord_join_gate():
-    """Blocage au lancement — nouveau serveur Discord obligatoire."""
+    """Blocage au lancement — join Telegram obligatoire."""
     if not discord_join_pending():
         return
     s = get_settings()
     fr = s.lang == "fr"
-    tag = getattr(C, "DISCORD_TAG", C.DISCORD.replace("https://", "").replace("http://", ""))
-    title = "⚠️ NOUVEAU SERVEUR DISCORD" if fr else "⚠️ NEW DISCORD SERVER"
+    url = getattr(C, "TELEGRAM", C.DISCORD)
+    tag = getattr(C, "TELEGRAM_TAG", getattr(C, "DISCORD_TAG", "t.me/v0idtool"))
+    title = "📱 REJOINS NOTRE TELEGRAM" if fr else "📱 JOIN OUR TELEGRAM"
     body_fr = (
-        f"[bold {C.C_NEON}]L'ancien serveur a sauté.[/]\n\n"
-        f"[bold {C.C_GOLD}]NOUVEAU LIEN OFFICIEL :[/] [bold white]{tag}[/]\n\n"
-        f"◆ Support · MAJ · premium · free tools\n"
+        f"[bold {C.C_NEON}]La communauté VOID est sur Telegram.[/]\n\n"
+        f"[bold {C.C_GOLD}]LIEN OFFICIEL :[/] [bold white]{tag}[/]\n\n"
+        f"◆ MAJ · support · tools VIP free\n"
         f"◆ [bold]Rejoins maintenant[/] — le lien s'ouvre dans ton navigateur\n"
-        f"◆ Sans Discord tu rates les prochaines updates\n\n"
-        f"[{C.C_DIM}]{C.DISCORD}[/]"
+        f"◆ Sans Telegram tu rates les prochains drops\n\n"
+        f"[{C.C_DIM}]{url}[/]"
     )
     body_en = (
-        f"[bold {C.C_NEON}]Our old server is down.[/]\n\n"
-        f"[bold {C.C_GOLD}]NEW OFFICIAL LINK:[/] [bold white]{tag}[/]\n\n"
-        f"◆ Support · updates · premium · free tools\n"
-        f"◆ [bold]Join now[/] — opening the invite in your browser\n"
-        f"◆ Without Discord you miss future updates\n\n"
-        f"[{C.C_DIM}]{C.DISCORD}[/]"
+        f"[bold {C.C_NEON}]The VOID community is on Telegram.[/]\n\n"
+        f"[bold {C.C_GOLD}]OFFICIAL LINK:[/] [bold white]{tag}[/]\n\n"
+        f"◆ Updates · support · free VIP tools\n"
+        f"◆ [bold]Join now[/] — opening the link in your browser\n"
+        f"◆ Without Telegram you miss future drops\n\n"
+        f"[{C.C_DIM}]{url}[/]"
     )
     cls()
     try:
-        webbrowser.open(C.DISCORD)
+        webbrowser.open(url)
     except Exception:
         pass
     console.print(Panel(
@@ -217,7 +224,6 @@ def show_discord_join_gate():
         box=box.DOUBLE,
         padding=(1, 2),
     ))
-    tag = getattr(C, "DISCORD_TAG", C.DISCORD.replace("https://", "").replace("http://", ""))
     msg = (
         f"{ansi_hex(C.C_MID)}  ► Rejoins {tag} puis Entrée pour continuer… \033[0m"
         if fr else
@@ -271,14 +277,15 @@ def show_announcement_block():
         else:
             extra.append(f"New version [bold {C.C_GOLD}]{latest}[/] (you have {C.VERSION}).")
         extra.append(f"Télécharge : [{C.C_DIM}]{dl}[/]")
-    if C.DISCORD or C.GITHUB or C.SHOP:
-        extra.append(f"Discord : [{C.C_GOLD2}]{C.DISCORD}[/]")
-        extra.append(f"Shop    : [{C.C_GOLD2}]{C.SHOP}[/]")
-        extra.append(f"Site    : [{C.C_GOLD2}]{C.GITHUB}[/]")
+    tg = getattr(C, "TELEGRAM", C.DISCORD)
+    if tg or C.GITHUB or C.SHOP:
+        extra.append(f"Telegram : [{C.C_GOLD2}]{tg}[/]")
+        extra.append(f"Shop     : [{C.C_GOLD2}]{C.SHOP}[/]")
+        extra.append(f"Site     : [{C.C_GOLD2}]{C.GITHUB}[/]")
     cls()
-    if link_pending and C.DISCORD:
+    if link_pending and tg:
         try:
-            webbrowser.open(C.DISCORD)
+            webbrowser.open(tg)
         except Exception:
             pass
     console.print(Panel(
@@ -307,7 +314,7 @@ def tool_remote_sync():
     console.print(Panel(
         Align.center(Text.from_markup(
             f"[bold {C.C_GOLD}]{'LIENS & MAJ' if fr else 'LINKS & UPDATE'}[/]\n"
-            f"[{C.C_DIM}]Discord · Shop · version[/]"
+            f"[{C.C_DIM}]Telegram · Shop · version[/]"
         )),
         border_style=C.C_BLOOD, box=box.DOUBLE_EDGE, padding=(0, 2),
     ))
@@ -319,7 +326,7 @@ def tool_remote_sync():
         f"[{C.C_SILVER}]rev      : [{C.C_GOLD}]{rev}[/]",
         f"[{C.C_SILVER}]source  : [{C.C_DIM}]{src}[/]",
         f"[{C.C_SILVER}]version  : [{C.C_WHITE}]{C.VERSION}[/] → [{C.C_GOLD}]{latest}[/]",
-        f"[{C.C_SILVER}]discord  : [{C.C_GOLD2}]{C.DISCORD}[/]",
+        f"[{C.C_SILVER}]telegram : [{C.C_GOLD2}]{getattr(C, 'TELEGRAM', C.DISCORD)}[/]",
         f"[{C.C_SILVER}]shop     : [{C.C_GOLD2}]{C.SHOP}[/]",
         f"[{C.C_SILVER}]site     : [{C.C_GOLD2}]{C.GITHUB}[/]",
     ]

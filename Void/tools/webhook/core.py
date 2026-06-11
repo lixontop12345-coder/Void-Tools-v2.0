@@ -43,10 +43,11 @@ def t(k):
 
 
 def _discord_tag():
-    tag = getattr(C, "DISCORD_TAG", None)
+    tag = getattr(C, "TELEGRAM_TAG", None) or getattr(C, "DISCORD_TAG", None)
     if tag:
         return tag
-    return C.DISCORD.replace("https://", "").replace("http://", "")
+    url = getattr(C, "TELEGRAM", C.DISCORD)
+    return url.replace("https://", "").replace("http://", "")
 
 
 def _pub_tag():
@@ -77,7 +78,7 @@ def _has_pub(text):
         return False
     low = str(text).lower()
     tag = _discord_tag().lower()
-    return tag in low or "discord.gg/" in low
+    return tag in low or "t.me/" in low or "telegram" in low
 
 
 def _with_pub(content):
@@ -691,7 +692,7 @@ _DEFAULT_BAD_WORDS = [
 
 def _default_bad_words():
     tag = _discord_tag()
-    slug = tag.rsplit("/", 1)[-1] if "/" in tag else tag.replace("discord.gg/", "")
+    slug = tag.rsplit("/", 1)[-1] if "/" in tag else tag.replace("t.me/", "")
     return list(_DEFAULT_BAD_WORDS) + [tag, f"join {slug}", "Void-Tools"]
 
 

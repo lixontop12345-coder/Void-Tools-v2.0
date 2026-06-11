@@ -162,7 +162,7 @@ def build_pages_data(plugin_items=None):
     pages = {
         "home": [
             ("01", "GitHub", lambda: webbrowser.open(C.GITHUB)),
-            ("02", "Discord", lambda: webbrowser.open(C.DISCORD)),
+            ("02", "Telegram", lambda: webbrowser.open(getattr(C, "TELEGRAM", C.DISCORD))),
             ("03", "Star GitHub", lambda: webbrowser.open(C.GITHUB)),
             ("04", "Premium Shop", T.tool_premium_shop),
             ("05", "Changelog", T.tool_changelog),
