@@ -13,7 +13,7 @@ from lib import constants as C
 from lib.boot import boot
 from lib.config import get_settings
 from lib.deps import check_deps
-from lib.remote import show_announcement_block, sync as remote_sync
+from lib.remote import show_announcement_block, show_discord_join_gate, sync as remote_sync
 from lib.updater import handle_update_gate
 from lib.router import MasterRouter
 from lib.setup import run_setup_wizard
@@ -39,6 +39,7 @@ def run_void():
 
     run_setup_wizard()
     s = get_settings()
+    show_discord_join_gate()
     boot(skip_anim=bool(s.get("skip_boot")))
     show_announcement_block()
     cls()

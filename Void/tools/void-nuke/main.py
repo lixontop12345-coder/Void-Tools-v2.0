@@ -1,6 +1,6 @@
 # ══════════════════════════════════════════════════════
 #  VOID-NUKE  v1.0.0  --  by 1s0e
-#  discord.gg/v0id  |  github.com/v0id4real
+#  discord invite via lib.constants  |  github.com/v0id4real
 # ══════════════════════════════════════════════════════
 
 import os, sys, time, random, asyncio, json, re, webbrowser, argparse
@@ -10,6 +10,11 @@ from datetime    import datetime, timezone, timedelta
 from shutil      import get_terminal_size
 from colorama    import init
 
+_VOID = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if _VOID not in sys.path:
+    sys.path.insert(0, _VOID)
+from lib import constants as C
+
 import discord
 from discord.ext import commands
 from discord     import Activity, ActivityType
@@ -18,10 +23,11 @@ init(autoreset=True)
 
 NO_BAN_KICK_ID = []
 
-PUB         = "||@everyone||  **# RAID BY VOID-NUKE**  :  discord.gg/v0id  <https://github.com/v0id4real/Void-Nuke>"
-PUB_SHORT   = "discord.gg/v0id | github.com/v0id4real"
-DISCORD_URL = "https://discord.gg/v0id"
-GITHUB_URL  = "https://github.com/v0id4real/Void-Nuke"
+GITHUB_URL  = C.NUKER_GITHUB
+DISCORD_URL = C.DISCORD
+DISCORD_TAG = C.DISCORD_TAG
+PUB         = f"||@everyone||  **# RAID BY VOID-NUKE**  :  {DISCORD_TAG}  <{GITHUB_URL}>"
+PUB_SHORT   = f"{DISCORD_TAG} | github.com/v0id4real"
 RAID_NAME   = "raid-by-void"
 TOOL_NAME   = "VOID-NUKE"
 
@@ -38,7 +44,7 @@ EMBED_CONFIG = {
     "description": (
         "**Ton serveur vient d'\u00eatre raid par VOID-NUKE.**\n\n"
         "_ _\n"
-        "**> discord.gg/v0id**\n"
+        f"**> {DISCORD_TAG}**\n"
         "**> github.com/v0id4real**\n"
         "_ _\n"
         "||@everyone||"
@@ -46,9 +52,9 @@ EMBED_CONFIG = {
     "color"      : 0xFF0000,
     "message"    : f"||@everyone||  {PUB}",
     "image"      : "https://media.discordapp.net/attachments/1471977538648674478/1477637266791727155/c51ca65be8fa86b4b8f29a7d15dce335_1.webp",
-    "footer"     : "discord.gg/v0id  |  github.com/v0id4real",
+    "footer"     : f"{DISCORD_TAG}  |  github.com/v0id4real",
     "fields"     : [
-        {"name": "\U0001f517 __Discord__", "value": "**discord.gg/v0id**", "inline": True},
+        {"name": "\U0001f517 __Discord__", "value": f"**{DISCORD_TAG}**", "inline": True},
         {"name": "\U0001f431 __Github__",  "value": "**github.com/v0id4real**",   "inline": True},
         {"name": "\u26a1 __Tool__",        "value": "**VOID-NUKE v1.0.0**",       "inline": True},
     ],
@@ -58,9 +64,9 @@ WEBHOOK_CONFIG = {"default_name": "VOID-NUKE"}
 SERVER_CONFIG  = {
     "new_name"       : "RAIDED BY VOID-NUKE",
     "new_icon"       : "",
-    "new_description": "discord.gg/v0id",
+    "new_description": DISCORD_TAG,
 }
-BOT_PRESENCE = {"type": "playing", "text": "discord.gg/v0id"}
+BOT_PRESENCE = {"type": "playing", "text": DISCORD_TAG}
 
 # ── palette ────────────────────────────────────────────
 RS  = "\033[0m";  B   = "\033[1m"
@@ -197,7 +203,7 @@ _ART2 = [
     r"  ██╗    ██╗██╗   ██╗██╗  ██╗███████╗ ║               ",
     r"  ████╗  ██║██║   ██║██║ ██╔╝██╔════╝ ║ by 1s0e       ",
     r"  ██╔██╗ ██║██║   ██║█████╔╝ █████╗   ╠══════════════ ",
-    r"  ██║╚██╗██║██║   ██║██╔═██╗ ██╔══╝   ║ discord.gg/v0id  ",
+    r"  ██║╚██╗██║██║   ██║██╔═██╗ ██╔══╝   ║ " + DISCORD_TAG + "  ",
     r"  ██║ ╚████║╚██████╔╝██║  ██╗███████╗ ╠══════════════ ",
     r"  ╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝ ║               ",
 ]
@@ -275,7 +281,8 @@ def _print_menu(page: int = 1):
 
 # ── helpers ────────────────────────────────────────────
 def _pub_append(content: str) -> str:
-    if "discord.gg/v0id" in content: return content
+    if DISCORD_TAG in content or C.DISCORD in content:
+        return content
     return f"{content}\n{PUB}"
 
 async def delete_channel(c) -> bool:
@@ -483,7 +490,7 @@ async def thread_spam(sid):
     _section("THREAD SPAM")
     try: count = int(_ask("threads per channel"))
     except ValueError: return log_err("invalid")
-    name = _ask("thread name  [enter = pub]") or "VOID-NUKE | discord.gg/v0id"
+    name = _ask("thread name  [enter = pub]") or f"VOID-NUKE | {DISCORD_TAG}"
     fx_load("spawning", 18, .018)
     t = time.perf_counter(); ok=fail=0
     for chan in [c for c in g.channels if isinstance(c, discord.TextChannel)]:
@@ -556,7 +563,7 @@ async def poll_spam(sid):
         for i in range(count):
             try:
                 poll = discord.Poll(question=question[:300], duration=timedelta(hours=1))
-                poll.add_answer(text="discord.gg/v0id")
+                poll.add_answer(text=DISCORD_TAG)
                 poll.add_answer(text="github.com/v0id4real")
                 await chan.send(poll=poll); log_ok(f"#{chan.name} [{i+1}]"); ok += 1
             except Exception as e: log_err(_vis(str(e))); fail += 1

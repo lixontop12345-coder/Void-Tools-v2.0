@@ -5,6 +5,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+import webbrowser
 
 from rich.align import Align
 from rich.panel import Panel
@@ -162,6 +163,72 @@ def mark_seen():
     s.save()
 
 
+def _norm_invite(url):
+    return str(url or "").strip().rstrip("/").lower()
+
+
+def discord_join_pending():
+    """True si l'utilisateur n'a pas encore validé le lien Discord actuel."""
+    s = get_settings()
+    current = _norm_invite(C.DISCORD)
+    seen = _norm_invite(s.get("last_seen_discord_invite", ""))
+    return bool(current) and current != seen
+
+
+def mark_discord_join_seen():
+    s = get_settings()
+    s.set("last_seen_discord_invite", C.DISCORD)
+    s.save()
+
+
+def show_discord_join_gate():
+    """Blocage au lancement — nouveau serveur Discord obligatoire."""
+    if not discord_join_pending():
+        return
+    s = get_settings()
+    fr = s.lang == "fr"
+    tag = getattr(C, "DISCORD_TAG", C.DISCORD.replace("https://", "").replace("http://", ""))
+    title = "⚠️ NOUVEAU SERVEUR DISCORD" if fr else "⚠️ NEW DISCORD SERVER"
+    body_fr = (
+        f"[bold {C.C_NEON}]L'ancien serveur a sauté.[/]\n\n"
+        f"[bold {C.C_GOLD}]NOUVEAU LIEN OFFICIEL :[/] [bold white]{tag}[/]\n\n"
+        f"◆ Support · MAJ · premium · free tools\n"
+        f"◆ [bold]Rejoins maintenant[/] — le lien s'ouvre dans ton navigateur\n"
+        f"◆ Sans Discord tu rates les prochaines updates\n\n"
+        f"[{C.C_DIM}]{C.DISCORD}[/]"
+    )
+    body_en = (
+        f"[bold {C.C_NEON}]Our old server is down.[/]\n\n"
+        f"[bold {C.C_GOLD}]NEW OFFICIAL LINK:[/] [bold white]{tag}[/]\n\n"
+        f"◆ Support · updates · premium · free tools\n"
+        f"◆ [bold]Join now[/] — opening the invite in your browser\n"
+        f"◆ Without Discord you miss future updates\n\n"
+        f"[{C.C_DIM}]{C.DISCORD}[/]"
+    )
+    cls()
+    try:
+        webbrowser.open(C.DISCORD)
+    except Exception:
+        pass
+    console.print(Panel(
+        Align.center(Text.from_markup(body_fr if fr else body_en)),
+        title=f"[bold {C.C_GOLD}]{title}[/]",
+        border_style=C.C_NEON,
+        box=box.DOUBLE,
+        padding=(1, 2),
+    ))
+    tag = getattr(C, "DISCORD_TAG", C.DISCORD.replace("https://", "").replace("http://", ""))
+    msg = (
+        f"{ansi_hex(C.C_MID)}  ► Rejoins {tag} puis Entrée pour continuer… \033[0m"
+        if fr else
+        f"{ansi_hex(C.C_MID)}  ► Join {tag} then press Enter to continue… \033[0m"
+    )
+    input(msg)
+    mark_discord_join_seen()
+    mark_seen()
+    cls()
+
+
 def version_update_available():
     m = get_manifest()
     latest = str(m.get("latest_version", C.VERSION))
@@ -209,6 +276,11 @@ def show_announcement_block():
         extra.append(f"Shop    : [{C.C_GOLD2}]{C.SHOP}[/]")
         extra.append(f"Site    : [{C.C_GOLD2}]{C.GITHUB}[/]")
     cls()
+    if link_pending and C.DISCORD:
+        try:
+            webbrowser.open(C.DISCORD)
+        except Exception:
+            pass
     console.print(Panel(
         Align.center(Text.from_markup(
             f"[bold {C.C_NEON}]{title}[/]\n\n{body}"

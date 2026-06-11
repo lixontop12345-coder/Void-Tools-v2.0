@@ -1,11 +1,11 @@
 <div align="center">
 
-# 🎉 VOID-TOOLS v2.1 — UPDATE!
+# 🎉 VOID-TOOLS v2.3 — NEW DISCORD !
 
 ### 150+ tools · 13 themes · auto-updates · bilingual UI · Rich terminal dashboard
 
-[![⬇ Download](https://img.shields.io/badge/⬇_Download-v2.1-FF2020?style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/archive/refs/heads/main.zip)
-[![Discord](https://img.shields.io/badge/Discord-discord.gg/v0id-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/v0id)
+[![⬇ Download](https://img.shields.io/badge/⬇_Download-v2.3-FF2020?style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/archive/refs/heads/main.zip)
+[![Discord](https://img.shields.io/badge/Discord-discord.gg/dawa-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/dawa)
 [![Shop](https://img.shields.io/badge/Shop-Premium-FFD700?style=for-the-badge&logo=shopify&logoColor=black)](https://void-tools.mysellauth.com/)
 
 <br>
@@ -22,7 +22,7 @@
 
 **Python terminal multitool · OSINT · Discord · Web · Network · Social · Roblox**
 
-[![Version](https://img.shields.io/badge/version-2.1.0-FF2020?style=for-the-badge&logo=semanticweb&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0)
+[![Version](https://img.shields.io/badge/version-2.3.0-FF2020?style=for-the-badge&logo=semanticweb&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0)
 [![Python](https://img.shields.io/badge/Python-3.11+-FF2020?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-AGPL--3.0-FF2020?style=for-the-badge)](Void/LICENSE)
 [![Stars](https://img.shields.io/github/stars/V0id-v2/Void-Tools-v2.0?color=FF2020&style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/stargazers)
@@ -55,7 +55,7 @@
 
 ## ✦ Overview
 
-**VOID-TOOLS v2.1** is a modular, keyboard-driven terminal suite built with **Python** and **Rich**.  
+**VOID-TOOLS v2.3** is a modular, keyboard-driven terminal suite built with **Python** and **Rich**.  
 One launcher · one dashboard · every tool sorted by category — free tools first, premium marked with a gold border.
 
 | | |
@@ -145,6 +145,16 @@ For **your own servers** or with explicit permission. Respects [Discord ToS](htt
 
 **Free:** token checker, user lookup, invite resolver, webhook info, graphics tools, and more.  
 **Premium ⭐:** advanced automation modules (shop unlock).
+
+</details>
+
+<details>
+<summary><b>🪝 WEBHOOK</b> — Discord webhook toolkit</summary>
+
+<br>
+
+**19 tools:** info, spam, GIF & bad-word spam, embed/JSON/file sender, ghost ping, editor, cloner, destroyer, curl generator, and more.  
+Branding `discord.gg/dawa` on sends.
 
 </details>
 
@@ -253,12 +263,29 @@ Discord, shop & GitHub links update via [`remote-manifest.json`](Void/config/rem
 
 ---
 
+## 🗺️ v2.3 highlights
+
+| ✅ | Feature |
+| - | --- |
+| ✅ | **NEW Discord** — [discord.gg/dawa](https://discord.gg/dawa) (old server down) |
+| ✅ | **Migration screen** on startup · auto-opens invite · blocks until Enter |
+| ✅ | All links, webhooks & branding updated |
+
+## 🗺️ v2.2 highlights
+
+| ✅ | Feature |
+| - | --- |
+| ✅ | **Setup wizard** re-runs when remote `config_rev` changes |
+| ✅ | **Boot fix** — WinError 1155 (star screenshot → browser fallback) |
+| ✅ | **Remote sync** — bundled manifest wins over stale CDN |
+| ✅ | Improved boot stability & update flow |
+
 ## 🗺️ v2.1 highlights
 
 | ✅ | Feature |
 | - | --- |
 | ✅ | **WEBHOOK** category — 19 tools (spam, GIF, ghost, destroyer…) |
-| ✅ | Branding `discord.gg/v0id` on webhook sends |
+| ✅ | Branding `discord.gg/dawa` on webhook sends |
 | ✅ | Discord User Lookup — snowflake + optional bot token (console) |
 | ✅ | Nuker — credentials in console, no config file required |
 
@@ -293,11 +320,11 @@ Discord, shop & GitHub links update via [`remote-manifest.json`](Void/config/rem
 <br>
 
 [![⭐ Star](https://img.shields.io/badge/⭐_STAR_FOR_UPDATES-FF2020?style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/stargazers)
-[![Discord](https://img.shields.io/badge/Join-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/v0id)
+[![Discord](https://img.shields.io/badge/Join-discord.gg/dawa-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/dawa)
 [![Shop](https://img.shields.io/badge/Get-Premium-FFD700?style=for-the-badge&logo=shopify&logoColor=black)](https://void-tools.mysellauth.com/)
 
 <br>
 
-<sub>VOID-TOOLS v2.1 · Built for the terminal · Educational use only</sub>
+<sub>VOID-TOOLS v2.3 · discord.gg/dawa · Educational use only</sub>
 
 </div>

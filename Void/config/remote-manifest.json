@@ -1,18 +1,18 @@
 {
-  "config_rev": "2",
-  "latest_version": "2.1.0",
+  "config_rev": "4",
+  "latest_version": "2.3.0",
   "download_url": "https://github.com/V0id-v2/Void-Tools-v2.0/releases",
   "zip_url": "https://github.com/V0id-v2/Void-Tools-v2.0/archive/refs/heads/main.zip",
   "announcement": {
-    "title_fr": "VOID-TOOLS v2.1.0 — MISE À JOUR !",
-    "title_en": "VOID-TOOLS v2.1.0 — UPDATE AVAILABLE!",
-    "body_fr": "Nouvelle mise à jour v2.1.0 disponible !\n\n◆ Catégorie WEBHOOK (19 outils)\n◆ Spam GIF · bad words · branding discord.gg/v0id\n◆ User Lookup Discord amélioré\n◆ Tout en console — plus besoin de config token\n\n▸ Menu HOME → Liens / MAJ pour sync\n▸ Ou retélécharge le ZIP sur GitHub\n\n⭐ Star le repo pour supporter le projet !",
-    "body_en": "New update v2.1.0 is live!\n\n◆ WEBHOOK category (19 tools)\n◆ GIF spam · bad words · discord.gg/v0id branding\n◆ Improved Discord User Lookup\n◆ Console-only tokens — no config file needed\n\n▸ HOME → Remote sync to update\n▸ Or re-download the ZIP on GitHub\n\n⭐ Star the repo to support the project!"
+    "title_fr": "⚠️ NOUVEAU DISCORD — REJOINS MAINTENANT !",
+    "title_en": "⚠️ NEW DISCORD — JOIN NOW!",
+    "body_fr": "Notre ancien serveur a sauté.\n\n🔴 **NOUVEAU LIEN OFFICIEL : discord.gg/dawa**\n\n◆ Tous les updates · support · premium · free tools\n◆ Rejoins MAINTENANT — le lien s'ouvre automatiquement\n◆ Void-Tools v2.3.0 — tout est migré\n\n▸ HOME → Discord\n▸ Ou va direct sur https://discord.gg/dawa\n\n⭐ Ne rate pas les prochaines MAJ !",
+    "body_en": "Our old server is gone.\n\n🔴 **NEW OFFICIAL LINK: discord.gg/dawa**\n\n◆ All updates · support · premium · free tools\n◆ Join NOW — link opens automatically\n◆ Void-Tools v2.3.0 — everything migrated\n\n▸ HOME → Discord\n▸ Or go to https://discord.gg/dawa\n\n⭐ Don't miss the next updates!"
   },
   "links": {
-    "discord": "https://discord.gg/v0id",
+    "discord": "https://discord.gg/dawa",
     "github": "https://github.com/V0id-v2/Void-Tools-v2.0",
     "shop": "https://void-tools.mysellauth.com/"
   },
-  "changelog": "VOID-TOOLS v2.1.0\n- WEBHOOK category (19 tools) · GIF/bad-word spam · pub discord.gg/v0id\n- Discord User Lookup snowflake + optional bot token in console\n- Nuker webhook tools via console credentials\n- Removed config-token dependency for webhook generator"
+  "changelog": "VOID-TOOLS v2.3.0\n- NEW OFFICIAL DISCORD: discord.gg/dawa (old server down — mandatory rejoin)\n- Migration screen on startup · auto-opens Discord invite\n- All links, webhooks & branding updated to discord.gg/dawa\n\nVOID-TOOLS v2.2.0\n- Setup wizard re-runs when remote manifest config_rev changes (lang · theme · username)\n- Boot fix: WinError 1155 when opening star screenshot (startfile → browser fallback)\n- Remote sync: prefer bundled manifest when its config_rev is newer than stale CDN\n- Improved boot stability and update flow\n\nVOID-TOOLS v2.1.0\n- WEBHOOK category (19 tools) · GIF/bad-word spam · discord branding\n- Discord User Lookup snowflake + optional bot token in console\n- Nuker webhook tools via console credentials\n- Removed config-token dependency for webhook generator"
 }

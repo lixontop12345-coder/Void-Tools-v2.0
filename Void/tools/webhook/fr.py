@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
+import os
 import sys
+
+_VOID = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if _VOID not in sys.path:
+    sys.path.insert(0, _VOID)
+from lib import constants as C
+
 from core import set_language, run_tool
+
+_TAG = C.DISCORD_TAG
+_VER = C.VERSION
 
 STRINGS = {
     "pause": "Entrée pour revenir au menu…",
@@ -8,8 +18,8 @@ STRINGS = {
     "error_title": "Erreur", "unknown": "Outil inconnu :", "network": "Connexion impossible",
     "file_not_found": "Fichier introuvable", "lines_hint": "1 par ligne, ligne vide pour finir",
     "name": "Nom", "type": "Type", "created": "Création",
-    "pub_tag": "discord.gg/v0id", "pub_short": "discord.gg/v0id · Void-Tools v2",
-    "pub_line": "**Void-Tools** → discord.gg/v0id", "pub_user": "Void-Tools",
+    "pub_tag": _TAG, "pub_short": f"{_TAG} · Void-Tools v{_VER}",
+    "pub_line": f"**Void-Tools** → {_TAG}", "pub_user": "Void-Tools",
     "wh_title": "Webhook Info", "wh_desc": "URL webhook → salon, serveur & détails",
     "wh_prompt": "URL webhook complète", "wh_invalid": "URL webhook invalide",
     "wh_fail": "Webhook introuvable", "wh_fetch": "Récupération…",
@@ -17,7 +27,7 @@ STRINGS = {
     "wsg_test": "Ping test", "wsg_custom": "Message custom", "wsg_tts": "Message TTS",
     "wsg_silent": "Silencieux (sans notif)", "wsg_fake": "Faux username/avatar", "wsg_mention": "Mention ping",
     "wsg_thread": "Thread / post forum",
-    "wt_ping": "✔ Void-Tools online — discord.gg/v0id",
+    "wt_ping": f"✔ Void-Tools online — {_TAG}",
     "wt_sending": "Envoi…", "wt_ok": "Message envoyé", "wt_fail": "Échec envoi",
     "ws_title": "Webhook Spammer", "ws_desc": "Normal, mass threads, multi-URL, mots aléatoires, embed spam",
     "ws_mode_normal": "Spam normal", "ws_mode_mass": "Mass (threads)", "ws_mode_multi": "Multi-webhook",
@@ -42,7 +52,7 @@ STRINGS = {
     "we_title": "Embed Sender", "we_desc": "Envoie un embed riche via le webhook",
     "we_embed_title": "Titre embed", "we_embed_desc": "Description embed",
     "we_color": "Couleur hex (défaut 880000)", "we_footer": "Texte footer",
-    "we_thumb": "URL miniature (optionnel)", "we_default_desc": "Propulsé par Void-Tools · discord.gg/v0id",
+    "we_thumb": "URL miniature (optionnel)", "we_default_desc": f"Propulsé par Void-Tools · {_TAG}",
     "we_sending": "Envoi embed…", "we_ok": "Embed envoyé", "we_fail": "Échec embed",
     "wse_title": "Embed Spammer", "wse_desc": "Spam d'embeds colorés via webhook",
     "wse_running": "Envoi embeds…",
@@ -126,7 +136,7 @@ STRINGS = {
     "wcr_title": "Webhook Generator", "wcr_desc": "Créer un webhook via bot token + channel ID",
     "wcr_token": "Token bot", "wcr_no_token": "Token bot requis — saisis-le dans la console",
     "wcr_channel": "ID salon", "wcr_channel_invalid": "ID salon invalide",
-    "wcr_name": "Nom webhook", "wcr_ok": "Webhook créé — rejoins discord.gg/v0id", "wcr_fail": "Échec création",
+    "wcr_name": "Nom webhook", "wcr_ok": f"Webhook créé — rejoins {_TAG}", "wcr_fail": "Échec création",
     "wst_title": "Sticker Sender", "wst_desc": "Envoyer un sticker Discord via webhook",
     "wst_id": "ID sticker", "wst_invalid": "ID sticker invalide",
     "wst_ok": "Sticker envoyé", "wst_fail": "Échec (sticker guild/Nitro requis)",

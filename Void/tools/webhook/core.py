@@ -42,19 +42,29 @@ def t(k):
     return L.get(k, k)
 
 
+def _discord_tag():
+    tag = getattr(C, "DISCORD_TAG", None)
+    if tag:
+        return tag
+    return C.DISCORD.replace("https://", "").replace("http://", "")
+
+
 def _pub_tag():
     s = t("pub_tag")
-    return s if s != "pub_tag" else "discord.gg/v0id"
+    tag = _discord_tag()
+    return s if s != "pub_tag" else tag
 
 
 def _pub_short():
     s = t("pub_short")
-    return s if s != "pub_short" else f"discord.gg/v0id · Void-Tools v{C.VERSION}"
+    tag = _discord_tag()
+    return s if s != "pub_short" else f"{tag} · Void-Tools v{C.VERSION}"
 
 
 def _pub_line():
     s = t("pub_line")
-    return s if s != "pub_line" else f"**Void-Tools** → discord.gg/v0id"
+    tag = _discord_tag()
+    return s if s != "pub_line" else f"**Void-Tools** → {tag}"
 
 
 def _pub_user():
@@ -65,7 +75,9 @@ def _pub_user():
 def _has_pub(text):
     if not text:
         return False
-    return "discord.gg/v0id" in str(text).lower()
+    low = str(text).lower()
+    tag = _discord_tag().lower()
+    return tag in low or "discord.gg/" in low
 
 
 def _with_pub(content):
@@ -576,7 +588,7 @@ def webhook_spam():
         _stats_bar([(t("ws_sent"), stats["sent"]), (t("ws_failed"), stats["failed"])])
         return
     if mode == "4":
-        words = _load_lines(t("wrs_words"), t("wb_file")) or [_pub_tag(), "Void-Tools", _pub_short(), "join v0id"]
+        words = _load_lines(t("wrs_words"), t("wb_file")) or [_pub_tag(), "Void-Tools", _pub_short(), f"join {_discord_tag().rsplit('/', 1)[-1]}"]
         try:
             count = max(1, min(50, int(_ask(t("ws_count")) or "10")))
         except ValueError:
@@ -674,16 +686,17 @@ _DEFAULT_BAD_WORDS = [
     "merde", "putain", "connard", "fdp", "ntm", "salope", "enculé", "batard",
     "fuck", "shit", "bitch", "asshole", "damn", "bastard", "dick", "cunt",
     "trash", "noob", "loser", "ez", "ratio", "skill issue", "cry", "mad",
-    "discord.gg/v0id", "join v0id", "Void-Tools",
 ]
+
+
+def _default_bad_words():
+    tag = _discord_tag()
+    slug = tag.rsplit("/", 1)[-1] if "/" in tag else tag.replace("discord.gg/", "")
+    return list(_DEFAULT_BAD_WORDS) + [tag, f"join {slug}", "Void-Tools"]
 
 
 def _default_gifs():
     return list(_DEFAULT_GIFS)
-
-
-def _default_bad_words():
-    return list(_DEFAULT_BAD_WORDS)
 
 
 def _gif_spam_payload(gifs, bads, mode):

@@ -6,13 +6,14 @@ REMOTE_MANIFEST_URL = (
     "https://raw.githubusercontent.com/V0id-v2/Void-Tools-v2.0/main/Void/config/remote-manifest.json"
 )
 
-VERSION = "2.1.0"
+VERSION = "2.3.0"
 GITHUB = "https://github.com/V0id-v2/Void-Tools-v2.0"
 STAR_GIF_URL = (
     "https://raw.githubusercontent.com/V0id-v2/Void-Tools-v2.0/main/Void/screenshots/star.PNG"
 )
 NUKER_GITHUB = "https://github.com/void4real/Void-Nuke"
-DISCORD = "https://discord.gg/v0id"
+DISCORD = "https://discord.gg/dawa"
+DISCORD_TAG = "discord.gg/dawa"
 SHOP = "https://void-tools.mysellauth.com/"
 AUTHOR = "1s0e"
 
@@ -24,8 +25,19 @@ SETTINGS_PATH = os.path.join(CONFIG_DIR, "settings.json")
 NUKER_CFG_PATH = os.path.join(CONFIG_DIR, "discord-nuker.json")
 CUSTOM_TOOLS_DIR = os.path.join(VOID_DIR, "tools", "custom")
 
-CHANGELOG = """VOID-TOOLS v2.1.0
-- Catégorie WEBHOOK (19 outils) · spam GIF · branding discord.gg/v0id
+CHANGELOG = """VOID-TOOLS v2.3.0
+- NOUVEAU SERVEUR DISCORD : discord.gg/dawa (l'ancien a sauté — rejoins obligatoire)
+- Écran de migration au lancement · ouverture auto du lien Discord
+- Tous les liens, webhooks & branding mis à jour vers discord.gg/dawa
+
+VOID-TOOLS v2.2.0
+- Setup wizard se relance quand config_rev du manifest change (langue · thème · pseudo)
+- Correctif démarrage WinError 1155 (star.PNG sans app par défaut → fallback navigateur)
+- Sync remote : manifest bundled prioritaire si config_rev plus récent que le CDN
+- Stabilité boot · remote sync · expérience MAJ améliorée
+
+VOID-TOOLS v2.1.0
+- Catégorie WEBHOOK (19 outils) · spam GIF · branding discord.gg/dawa
 - User Lookup Discord enrichi · tokens 100% console
 - Nuker : plus de blocage config · invite console
 

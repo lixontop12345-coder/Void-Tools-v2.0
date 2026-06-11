@@ -11,6 +11,7 @@ DEFAULTS = {
     "setup_complete": False,
     "last_setup_config_rev": "0",
     "last_seen_config_rev": "0",
+    "last_seen_discord_invite": "",
     "last_remote_sync": 0,
 }
 

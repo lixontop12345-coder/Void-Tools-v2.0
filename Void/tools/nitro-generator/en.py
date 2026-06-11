@@ -1,9 +1,15 @@
 import random
 import string
 import json
+import os
+import sys
 import requests
 from colorama import Fore, init
 
+_VOID = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if _VOID not in sys.path:
+    sys.path.insert(0, _VOID)
+from lib import constants as C
 
 init(autoreset=True)
 
@@ -17,13 +23,13 @@ def verify_webhook(url):
         response = requests.get(url)
         if response.status_code == 200:
             payload = {
-                'content': """# Void-Nitro-Gen
+                'content': f"""# Void-Nitro-Gen
 
                 
                 
 > __**Your webhook is awork you can start generating nitro!**__
 
-> https://discord.gg/v0id
+> {C.DISCORD}
 
 > https://github.com/V0id-v2/Void-Tools-v2.0
 
