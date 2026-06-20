@@ -51,7 +51,6 @@ def boot():
         sys.stdout.write("\033[?25h\033[0m")
     os.system("cls" if os.name == "nt" else "clear")
 
-
 DNSBLs = ["zen.spamhaus.org", "b.barracudacentral.org", "dnsbl.sorbs.net", "spam.dnsbl.sorbs.net", "bl.spamcop.net"]
 
 def check_bl(ip, bl):
@@ -93,6 +92,6 @@ if __name__ == "__main__":
             
         console.print(Align.center(Panel(tbl, title="[bold red]* DNSBL RÉSULTATS *", border_style="red")))
         console.print()
-        console.input(" [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
+
     except (KeyboardInterrupt, EOFError): pass
 

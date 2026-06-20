@@ -51,7 +51,6 @@ def boot():
         sys.stdout.write("\033[?25h\033[0m")
     os.system("cls" if os.name == "nt" else "clear")
 
-
 def get_operator(ip):
     r = requests.get(
         f"http://ip-api.com/json/{ip}?fields=status,message,isp,org,as,asname,query,country,countryCode,regionName,city",
@@ -59,7 +58,6 @@ def get_operator(ip):
     )
     r.raise_for_status()
     return r.json()
-
 
 def afficher(ip, data):
     if data.get("status") == "fail":
@@ -88,7 +86,6 @@ def afficher(ip, data):
         padding=(1, 4),
     )))
     console.print()
-
 
 if __name__ == "__main__":
     try:
@@ -120,7 +117,6 @@ if __name__ == "__main__":
             data = get_operator(ip)
 
         afficher(ip, data)
-        console.input(" [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
 
     except requests.RequestException as e:
         console.print(f"\n[red] [!] Erreur réseau :[/] {e}")

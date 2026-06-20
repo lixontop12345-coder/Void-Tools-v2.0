@@ -102,7 +102,6 @@ if __name__ == "__main__":
             border_style="red", padding=(0, 6)
         )))
         display_intel(ip, data)
-        console.input(" [dim]Press [bold red]ENTER[/] to exit...[/]")
 
     except (KeyboardInterrupt, EOFError):
         pass

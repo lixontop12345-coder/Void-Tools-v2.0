@@ -52,7 +52,6 @@ def boot():
         sys.stdout.write("\033[?25h\033[0m")
     os.system("cls" if os.name == "nt" else "clear")
 
-
 def ping_once(host):
     """Returns latency in ms or None."""
     param = "-n" if platform.system().lower() == "windows" else "-c"
@@ -70,7 +69,6 @@ def ping_once(host):
     except Exception:
         return None
 
-
 def tcp_check(host, port=80):
     try:
         t0 = time.time()
@@ -78,7 +76,6 @@ def tcp_check(host, port=80):
             return round((time.time() - t0) * 1000, 2)
     except Exception:
         return None
-
 
 def afficher(host, ip, latencies, tcp_ms):
     valid = [l for l in latencies if l is not None]
@@ -148,7 +145,6 @@ def afficher(host, ip, latencies, tcp_ms):
     )))
     console.print()
 
-
 if __name__ == "__main__":
     try:
         boot()
@@ -186,7 +182,6 @@ if __name__ == "__main__":
 
         tcp_ms = tcp_check(host)
         afficher(host, ip, latencies, tcp_ms)
-        console.input(" [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
 
     except (KeyboardInterrupt, EOFError):
         console.print("\n[red] [!] Test interrompu.[/]")

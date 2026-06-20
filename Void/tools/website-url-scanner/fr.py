@@ -106,5 +106,5 @@ if __name__ == "__main__":
 
         console.print(Rule(style="dim red"))
         console.print(f" [bold green][✓] Découverte terminée. {len(discovered)} endpoints trouvés.")
-        console.input("\n [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
+
     except (KeyboardInterrupt, EOFError): pass

@@ -1,0 +1,15 @@
+{
+    "token": "TON_TOKEN_ICI",
+    "RpcClientID": "1335999854836584569",
+    "Rpcstate": "Void Tools",
+    "Rpcdetails": "BETA | discord.gg/voidv2 | t.me/v0idtool",
+    "large_image": "5818a66ae8950da7811a7f4edadd0cf2",
+    "small_image": "5818a66ae8950da7811a7f4edadd0cf2",
+    "large_text": "Void Tools v2.0 BETA",
+    "party_id": "void-tools",
+    "ButtonLabel": "Discord",
+    "ButtonLabel1url": "https://discord.gg/voidv2",
+    "ButtonLabel2": "Telegram",
+    "ButtonLabel2url": "https://t.me/v0idtool",
+    "NukeServerBypass": "TON_USER_ID_ICI"
+}

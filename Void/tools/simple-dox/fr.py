@@ -84,7 +84,6 @@ if __name__ == "__main__":
         with open(final_file, "w", encoding="utf-8") as f: f.write(report)
 
         console.print(f"\n [bold green][✓] Rapport sauvegardé : {final_file}[/]")
-        console.input("\n [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
 
     except (KeyboardInterrupt, EOFError):
         pass

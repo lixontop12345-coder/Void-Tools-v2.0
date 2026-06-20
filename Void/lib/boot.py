@@ -174,32 +174,9 @@ def _cinematic_boot():
 
 # ── BOOT ENTRY ───────────────────────────────────────────────
 def first_run():
-    flag_dir = os.path.join(_VOID_DIR, "data")
-    if not os.path.exists(flag_dir):
-        os.makedirs(flag_dir, exist_ok=True)
-    flag = os.path.join(flag_dir, ".launched")
-
-    if not os.path.exists(flag):
-        webbrowser.open(C.GITHUB)
-        webbrowser.open(C.SHOP)
-        from .void_common import open_community_links
-        open_community_links()
-        gif = os.path.join(_VOID_DIR, "screenshots", "star.PNG")
-        if not os.path.exists(gif):
-            gif = os.path.join(_VOID_DIR, "screenshots", "Star.gif")
-        if os.path.exists(gif):
-            try:
-                if os.name == "nt":
-                    os.startfile(gif)
-                else:
-                    webbrowser.open(gif)
-            except Exception:
-                try:
-                    webbrowser.open(gif)
-                except Exception:
-                    pass
-        with open(flag, "w", encoding="utf-8") as f:
-            f.write("1")
+    """Marque le premier lancement (liens ouverts par show_discord_join_gate)."""
+    from .void_common import mark_first_launch_done
+    mark_first_launch_done()
 
 
 def boot(skip_anim=False):

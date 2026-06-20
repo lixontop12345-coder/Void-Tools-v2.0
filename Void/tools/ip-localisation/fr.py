@@ -53,7 +53,6 @@ def boot():
         sys.stdout.write("\033[?25h\033[0m")
     os.system("cls" if os.name == "nt" else "clear")
 
-
 def localiser_ip(ip):
     r = requests.get(
         f"http://ip-api.com/json/{ip}?fields=status,message,country,countryCode,regionName,city,zip,lat,lon,isp,org,as,query,mobile,proxy,hosting",
@@ -61,7 +60,6 @@ def localiser_ip(ip):
     )
     r.raise_for_status()
     return r.json()
-
 
 def afficher(data, ip):
     if data.get("status") == "fail":
@@ -107,7 +105,6 @@ def afficher(data, ip):
         console.print(Align.center(f"[dim]  Google Maps :[/]  [bright_blue underline]{maps}[/]"))
         console.print()
 
-
 if __name__ == "__main__":
     try:
         boot()
@@ -139,7 +136,6 @@ if __name__ == "__main__":
             data = localiser_ip(ip)
 
         afficher(data, ip)
-        console.input(" [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
 
     except requests.RequestException as e:
         console.print(f"\n[red] [!] Erreur réseau :[/] {e}")

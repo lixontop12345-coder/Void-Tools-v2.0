@@ -81,7 +81,6 @@ def main():
     console.print(Align.center(pnl))
     open_premium_links()
     console.print("\n")
-    console.input(Align.center(" [dim]Press [bold gold1]ENTER[/] to return to menu...[/]"))
 
 if __name__ == "__main__":
     try: main()

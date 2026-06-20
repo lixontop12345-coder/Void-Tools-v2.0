@@ -111,7 +111,6 @@ def main():
 
     console.print(layout)
     console.print(f"\n [bold red][!][/] Intelligence collection finished. Check OSINT Framework for deep WHOIS.")
-    console.input(f"\n [dim]Press [bold red]ENTER[/] to exit...[/]")
 
 if __name__ == "__main__":
     try: main()

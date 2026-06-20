@@ -14,7 +14,7 @@ from rich import box
 
 from . import constants as C
 from .config import get_settings
-from .void_common import ansi_hex, cls, console, error_box, open_community_links, pause, success_box
+from .void_common import ansi_hex, cls, console, error_box, mark_first_launch_done, open_community_links, open_first_launch_links, pause, success_box
 
 # Héberge Void/config/remote-manifest.json sur GitHub (branche main)
 REMOTE_URL = os.environ.get(
@@ -100,10 +100,17 @@ def apply_overrides(manifest=None):
         url = str(links["discord"]).strip()
         C.DISCORD = url
         C.DISCORD_TAG = url.replace("https://", "").replace("http://", "")
+    if links.get("discord_dawa"):
+        url = str(links["discord_dawa"]).strip()
+        C.DISCORD_DAWA = url
+        C.DISCORD_DAWA_TAG = url.replace("https://", "").replace("http://", "")
     if links.get("github"):
         C.GITHUB = str(links["github"]).strip()
     if links.get("shop"):
-        C.SHOP = str(links["shop"]).strip()
+        shop = str(links["shop"]).strip()
+        if "mysellauth" in shop.lower() or not shop:
+            shop = C.DISCORD
+        C.SHOP = shop
     if m.get("changelog"):
         C.CHANGELOG = str(m["changelog"])
 
@@ -176,7 +183,8 @@ def _norm_invite(url):
 def _community_key():
     tg = _norm_invite(getattr(C, "TELEGRAM", ""))
     dc = _norm_invite(getattr(C, "DISCORD", ""))
-    return f"{tg}|{dc}"
+    dawa = _norm_invite(getattr(C, "DISCORD_DAWA", ""))
+    return f"{tg}|{dc}|{dawa}"
 
 
 def discord_join_pending():
@@ -198,38 +206,49 @@ def mark_discord_join_seen():
 
 
 def show_discord_join_gate():
-    """Blocage au lancement — join Telegram + Discord."""
+    """Blocage au lancement — join Discord + star GitHub (premier lancement)."""
     if not discord_join_pending():
         return
     s = get_settings()
+    s.reload()
     fr = s.lang == "fr"
     tg_url = getattr(C, "TELEGRAM", "")
     tg_tag = getattr(C, "TELEGRAM_TAG", "t.me/v0idtool")
     dc_url = getattr(C, "DISCORD", "")
     dc_tag = getattr(C, "DISCORD_TAG", "discord.gg/voidv2")
-    title = "📱💬 REJOINS TELEGRAM + DISCORD" if fr else "📱💬 JOIN TELEGRAM + DISCORD"
+    dawa_url = getattr(C, "DISCORD_DAWA", "https://discord.gg/dawa")
+    dawa_tag = getattr(C, "DISCORD_DAWA_TAG", "discord.gg/dawa")
+    gh = getattr(C, "GITHUB", "")
+    title = "📱💬 REJOINS LA COMMUNAUTÉ VOID" if fr else "📱💬 JOIN THE VOID COMMUNITY"
     body_fr = (
-        f"[bold {C.C_NEON}]La communauté VOID est sur Telegram ET Discord.[/]\n\n"
-        f"[bold {C.C_GOLD}]Telegram :[/] [bold white]{tg_tag}[/]\n"
-        f"[bold {C.C_GOLD}]Discord  :[/] [bold white]{dc_tag}[/]\n\n"
+        f"[bold {C.C_NEON}]Premier lancement — ouverture automatique dans l'ordre :[/]\n\n"
+        f"[bold {C.C_GOLD}]1. Telegram :[/] [bold white]{tg_tag}[/]\n"
+        f"[bold {C.C_GOLD}]2. Discord  :[/] [bold white]{dc_tag}[/]\n"
+        f"[bold {C.C_GOLD}]3. Discord  :[/] [bold white]{dawa_tag}[/]\n"
+        f"[bold {C.C_GOLD}]4. GitHub +[/] [bold white]image star[/]\n\n"
         f"◆ MAJ · support · tools VIP free\n"
-        f"◆ [bold]Rejoins les deux[/] — les liens s'ouvrent dans ton navigateur\n"
-        f"◆ Sans ça tu rates les prochains drops\n\n"
+        f"◆ [bold]Star le repo GitHub[/] pour débloquer le premium\n\n"
         f"[{C.C_DIM}]{tg_url}[/]\n"
-        f"[{C.C_DIM}]{dc_url}[/]"
+        f"[{C.C_DIM}]{dc_url}[/]\n"
+        f"[{C.C_DIM}]{dawa_url}[/]\n"
+        f"[{C.C_DIM}]{gh}[/]"
     )
     body_en = (
-        f"[bold {C.C_NEON}]The VOID community is on Telegram AND Discord.[/]\n\n"
-        f"[bold {C.C_GOLD}]Telegram:[/] [bold white]{tg_tag}[/]\n"
-        f"[bold {C.C_GOLD}]Discord :[/] [bold white]{dc_tag}[/]\n\n"
+        f"[bold {C.C_NEON}]First launch — auto-opening in order:[/]\n\n"
+        f"[bold {C.C_GOLD}]1. Telegram:[/] [bold white]{tg_tag}[/]\n"
+        f"[bold {C.C_GOLD}]2. Discord :[/] [bold white]{dc_tag}[/]\n"
+        f"[bold {C.C_GOLD}]3. Discord :[/] [bold white]{dawa_tag}[/]\n"
+        f"[bold {C.C_GOLD}]4. GitHub +[/] [bold white]star image[/]\n\n"
         f"◆ Updates · support · free VIP tools\n"
-        f"◆ [bold]Join both[/] — opening both links in your browser\n"
-        f"◆ Without them you miss future drops\n\n"
+        f"◆ [bold]Star the GitHub repo[/] to unlock premium\n\n"
         f"[{C.C_DIM}]{tg_url}[/]\n"
-        f"[{C.C_DIM}]{dc_url}[/]"
+        f"[{C.C_DIM}]{dc_url}[/]\n"
+        f"[{C.C_DIM}]{dawa_url}[/]\n"
+        f"[{C.C_DIM}]{gh}[/]"
     )
     cls()
-    open_community_links()
+    open_first_launch_links()
+    mark_first_launch_done()
     console.print(Panel(
         Align.center(Text.from_markup(body_fr if fr else body_en)),
         title=f"[bold {C.C_GOLD}]{title}[/]",
@@ -238,9 +257,9 @@ def show_discord_join_gate():
         padding=(1, 2),
     ))
     msg = (
-        f"{ansi_hex(C.C_MID)}  ► Rejoins Telegram + Discord puis Entrée… \033[0m"
+        f"{ansi_hex(C.C_MID)}  ► Rejoins Telegram + Discords + star GitHub puis Entrée… \033[0m"
         if fr else
-        f"{ansi_hex(C.C_MID)}  ► Join Telegram + Discord then press Enter… \033[0m"
+        f"{ansi_hex(C.C_MID)}  ► Join Telegram + Discords + star GitHub then press Enter… \033[0m"
     )
     input(msg)
     mark_discord_join_seen()
@@ -276,6 +295,7 @@ def show_announcement_block():
     if not link_pending and not version_pending:
         return
     s = get_settings()
+    s.reload()
     fr = s.lang == "fr"
     m = get_manifest()
     ann = m.get("announcement") or {}
@@ -289,7 +309,9 @@ def show_announcement_block():
             extra.append(f"Nouvelle version [bold {C.C_GOLD}]{latest}[/] (tu as {C.VERSION}).")
         else:
             extra.append(f"New version [bold {C.C_GOLD}]{latest}[/] (you have {C.VERSION}).")
-        extra.append(f"Télécharge : [{C.C_DIM}]{dl}[/]")
+        extra.append(
+            f"{t('Télécharge', 'Download')} : [{C.C_DIM}]{dl}[/]"
+        )
     tg = getattr(C, "TELEGRAM", "")
     dc = getattr(C, "DISCORD", "")
     if tg or dc or C.GITHUB or C.SHOP:

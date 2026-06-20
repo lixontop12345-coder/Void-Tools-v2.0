@@ -61,13 +61,11 @@ GENERATORS = {
     },
 }
 
-
 def generer_code(blocs):
     return "-".join(
         ''.join(random.choice(CHARACTERS) for _ in range(n))
         for n in blocs
     )
-
 
 def demander_nombre(prompt):
     while True:
@@ -78,7 +76,6 @@ def demander_nombre(prompt):
             console.print("[bold red][!] Entrez un nombre supérieur à 0.[/bold red]")
         except ValueError:
             console.print("[bold red][!] Entrée invalide. Entrez un entier.[/bold red]")
-
 
 def lancer_generateur(cle):
     cfg = GENERATORS[cle]
@@ -136,7 +133,6 @@ def lancer_generateur(cle):
     except OSError as e:
         console.print(f"[bold red][!] Impossible de sauvegarder : {e}[/bold red]")
 
-
 def afficher_menu():
     console.print()
     console.print(Panel(
@@ -156,7 +152,6 @@ def afficher_menu():
 
     console.print(table)
 
-
 def main():
     try:
         while True:
@@ -171,13 +166,12 @@ def main():
             elif choix in GENERATORS:
                 lancer_generateur(choix)
                 console.print()
-                console.input("[dim]Appuyez sur Entrée pour continuer...[/dim]")
+
             else:
                 console.print(f"[bold red][!] Option '{choix}' non reconnue.[/bold red]")
 
     except (KeyboardInterrupt, EOFError):
         console.print("\n[bold red][!] Interrompu.[/bold red]")
-
 
 if __name__ == "__main__":
     main()

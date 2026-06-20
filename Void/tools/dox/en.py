@@ -113,7 +113,6 @@ if __name__ == "__main__":
         with open(final_file, "w", encoding="utf-8") as f: f.write(report)
 
         console.print(f"\n [bold green][✓] Dossier saved : {final_file}[/]")
-        console.input("\n [dim]Press [bold red]ENTER[/] to exit...[/]")
 
     except (KeyboardInterrupt, EOFError):
         pass

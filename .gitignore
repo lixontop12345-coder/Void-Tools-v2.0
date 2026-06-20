@@ -12,10 +12,16 @@ Void/data/remote-cache.json
 Void/data/webhook-*.json
 Void/data/webhook-response.txt
 Void/data/database/
+Void/data/exports/
 Void/config/settings.json
 Void/config/discord-nuker.json
 Void/config/webhooks.json
 Void/tools/void-nuke/.void_first
+Void/tools/void-selfbot/runtime/config/settings.json
+Void/tools/void-selfbot/runtime/config/token.txt
+Void/tools/void-selfbot/runtime/config/tokens.txt
+Void/tools/void-selfbot/runtime/data/*
+!Void/tools/void-selfbot/runtime/data/.gitkeep
 
 # OS
 Thumbs.db

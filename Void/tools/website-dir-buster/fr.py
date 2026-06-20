@@ -51,7 +51,6 @@ def boot():
         sys.stdout.write("\033[?25h\033[0m")
     os.system("cls" if os.name == "nt" else "clear")
 
-
 DIRS = [".git/", ".env", "config.php.bak", "backup.zip", "admin/", "login/", "dashboard/", "test/", "api/", "images/", "uploads/", "tmp/", "old/", "public/", "assets/", "js/", "css/", "vendor/", "src/"]
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0"
 
@@ -92,6 +91,6 @@ if __name__ == "__main__":
         
         console.print()
         console.print(f" [bold green][✓] Terminé. {len(found)} chemins trouvés.[/]")
-        console.input(" [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
+
     except (KeyboardInterrupt, EOFError): pass
 

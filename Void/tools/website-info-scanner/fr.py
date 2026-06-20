@@ -235,5 +235,5 @@ if __name__ == "__main__":
             console.print(Align.center(Panel(ptbl, title="[bold red]* Services Ouverts[/]", border_style="red")))
 
         console.print()
-        console.input(" [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
+
     except (KeyboardInterrupt, EOFError): pass

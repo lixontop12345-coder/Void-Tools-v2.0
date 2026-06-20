@@ -17,25 +17,39 @@ from .config import get_settings, nuker_status
 from .pages import build_pages_data
 from .plugins import discover_plugins
 from .search import run_search_ui
-from .ui import make_card_cell, make_title_text, monitor_block
+from .ui import make_card_cell, make_online_text, make_title_text, monitor_block
 from .void_common import cls, is_arrow, poll_console_key, safe_action, sort_free_first, append_star_unlock_items
+from .i18n import t
 
 STAR_CATEGORIES = {
-    "osint", "attack", "nuker", "discord", "webhook", "social", "roblox",
+    "osint", "attack", "nuker", "discord", "selfbot", "webhook", "social", "roblox",
     "ip-web", "generator", "crypto-utils", "darkweb", "plugins",
 }
 
 
+class _LiveDashboard:
+    """Renderable Rich — rebuild UI à chaque frame (animation ONLINE)."""
+
+    __slots__ = ("router",)
+
+    def __init__(self, router):
+        self.router = router
+
+    def __rich__(self):
+        return self.router.build_ui()
+
+
 class MasterRouter:
     MAX_ROWS = 4
-    MAX_CAT_VISIBLE = 9
+    MAX_CAT_VISIBLE = 11
 
     def __init__(self):
         self.settings = get_settings()
         plugins = discover_plugins()
         cats = [
             ("home", "HOME"), ("osint", "OSINT"), ("attack", "ATTACK"),
-            ("nuker", "NUKER"), ("discord", "DISCORD"), ("webhook", "WEBHOOK"),
+            ("nuker", "NUKER"), ("discord", "DISCORD"), ("selfbot", "SELFBOT"),
+            ("webhook", "WEBHOOK"),
             ("social", "SOCIAL"),
             ("roblox", "ROBLOX"), ("ip-web", "IP / WEB"), ("generator", "GEN"),
             ("crypto-utils", "UTILS"), ("darkweb", "DARKWEB"), ("about", "ABOUT"),
@@ -53,7 +67,7 @@ class MasterRouter:
         self._nuker_at = 0.0
         self._next_remote = time.time() + 300
         self.pages_data = build_pages_data(plugins)
-        skip = {"nuker", "home", "about", "darkweb", "generator", "crypto-utils", "plugins"}
+        skip = {"nuker", "home", "about", "darkweb", "generator", "crypto-utils", "plugins", "selfbot"}
         for key, items in self.pages_data.items():
             if key not in skip:
                 self.pages_data[key] = sort_free_first(items)
@@ -98,9 +112,10 @@ class MasterRouter:
         self.scroll_row = max(0, min(self.scroll_row, max_scroll))
 
     def build_ui(self):
+        self.settings.reload()
         s = self.settings
         tools = self._tools()
-        phase = (time.time() * 0.15) % 1.0 if C.is_rainbow() else 0.0
+        phase = (time.time() * 0.25) % 1.0 if C.is_rainbow() else 0.0
         pal = C.palette(phase)
         n = len(tools)
         if n:
@@ -119,7 +134,7 @@ class MasterRouter:
         head.add_column(ratio=2, justify="center")
         head.add_column(ratio=1, justify="right")
         head.add_row(
-            Text.from_markup(f"[{pal['neon']} bold]● ONLINE[/]"),
+            make_online_text(phase),
             make_title_text("VOID-TOOLS", phase),
             Text.from_markup(f"[bold {pal['neon']}]{s.username[:16]}[/]"),
         )
@@ -153,7 +168,7 @@ class MasterRouter:
         cat_label = self.categories[self.cat_idx][1]
         layout["sidebar"].update(Panel(
             Group(sidebar, monitor_block(cat_label, n, tools, s.username, self._nuker_state(), R.status_badge(), phase)),
-            title="[bold white]CATEGORIES",
+            title=f"[bold white]{t('CATÉGORIES', 'CATEGORIES')}[/]",
             border_style=pal["mid"],
             box=box.SQUARE,
             padding=(1, 2),
@@ -176,11 +191,13 @@ class MasterRouter:
             )
 
         total_rows = max(1, (n + 1) // 2)
-        up = f"[{pal['neon']}] ▲ MORE UP [/]" if self.scroll_row > 0 else "                  "
-        dn = f"[{pal['neon']}] ▼ MORE DOWN [/]" if self.scroll_row + self.MAX_ROWS < total_rows else "                  "
+        up = f"[{pal['neon']}] {t('▲ HAUT', '▲ UP')} [/]" if self.scroll_row > 0 else "                  "
+        dn = f"[{pal['neon']}] {t('▼ BAS', '▼ DOWN')} [/]" if self.scroll_row + self.MAX_ROWS < total_rows else "                  "
         footer = Text.assemble(
             Text.from_markup(up), Text("   "), Text.from_markup(dn),
-            Text("   "), Text.from_markup(f"[{C.C_DIM}]←→ · ↑↓ · Enter · F[/]"),
+            Text("   "), Text.from_markup(
+                f"[{C.C_DIM}]{t('←→ · ↑↓ · Entrée · F', '←→ · ↑↓ · Enter · F')}[/]"
+            ),
         )
         layout["body"].update(Panel(
             grid,
@@ -269,19 +286,25 @@ class MasterRouter:
         cols, rows = shutil.get_terminal_size((100, 30))
         if cols < 90 or rows < 28:
             cls()
-            print(f"\n  [!] Terminal trop petit ({cols}x{rows}). Min ~100x30.\n")
-            input("  Enter...")
+            print(
+                f"\n  [!] {t('Terminal trop petit', 'Terminal too small')} "
+                f"({cols}x{rows}). {t('Min ~100x30.', 'Min ~100x30.')}\n"
+            )
+            input(f"  {t('Entrée...', 'Enter...')}")
         cls()
-        with Live(self.build_ui(), auto_refresh=False, screen=True, transient=False) as live:
-            next_clock = time.time()
+        dashboard = _LiveDashboard(self)
+        frame_interval = 1.0 / 15
+        with Live(dashboard, auto_refresh=False, screen=True, transient=False) as live:
+            next_frame = 0.0
             while self.running:
                 now = time.time()
-                if now >= next_clock:
-                    live.update(self.build_ui(), refresh=True)
-                    next_clock = now + 1.0
-                    if now >= self._next_remote:
-                        R.sync()
-                        self._next_remote = now + 300
+                if now >= next_frame:
+                    live.update(_LiveDashboard(self), refresh=True)
+                    next_frame = now + frame_interval
+
+                if now >= self._next_remote:
+                    R.sync()
+                    self._next_remote = now + 300
 
                 if msvcrt.kbhit():
                     k = poll_console_key()
@@ -295,7 +318,7 @@ class MasterRouter:
                     elif res == "search":
                         run_search_ui(self, live)
                     if res:
-                        live.update(self.build_ui(), refresh=True)
-                        next_clock = time.time() + 1.0
+                        live.update(_LiveDashboard(self), refresh=True)
+                        next_frame = time.time() + frame_interval
                 else:
-                    time.sleep(0.03)
+                    time.sleep(0.005)

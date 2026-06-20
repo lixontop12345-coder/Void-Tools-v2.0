@@ -1,6 +1,6 @@
 # ══════════════════════════════════════════════════════
 #  VOID-NUKE  v1.0.0  --  by 1s0e
-#  discord invite via lib.constants  |  github.com/v0id4real
+#  t.me/v0idtool · discord.gg/voidv2  |  github.com/v0id4real
 # ══════════════════════════════════════════════════════
 
 import os, sys, time, random, asyncio, json, re, webbrowser, argparse
@@ -165,12 +165,20 @@ def _star_image_path():
     )
     return shared if os.path.exists(shared) else os.path.join(base, "Star.png")
 
+def _open_community_links():
+    for url in (TELEGRAM_URL, DISCORD_URL):
+        try:
+            webbrowser.open(url)
+            time.sleep(.4)
+        except Exception:
+            pass
+
 def _open_star_unlock():
     _section("STAR FOR UNLOCK")
     log_warn("star the repo to unlock premium features !")
     log_info("github.com/v0id4real/Void-Nuke")
     try:
-        webbrowser.open(DISCORD_URL)
+        _open_community_links()
         time.sleep(.4)
         webbrowser.open(GITHUB_URL)
         time.sleep(.4)
@@ -1152,7 +1160,7 @@ def _boot():
     if not os.path.exists(_flag):
         try:
             open(_flag, 'w').close()
-            webbrowser.open(DISCORD_URL)
+            _open_community_links()
             time.sleep(.4)
             webbrowser.open(GITHUB_URL)
             time.sleep(.4)

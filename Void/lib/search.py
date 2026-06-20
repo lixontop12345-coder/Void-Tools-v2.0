@@ -10,6 +10,7 @@ from rich import box
 
 from . import constants as C
 from .void_common import ansi_hex, console, error_box, fmt_label, is_premium, pause
+from .i18n import t
 
 
 def _score(query: str, label: str, cat: str, code: str) -> float:
@@ -73,6 +74,7 @@ def run_search_ui(router, live):
 
     live.stop()
     cls()
+    router.settings.reload()
     s = router.settings
     hint = (
         "free: · prem: · cat:discord · fuzzy"
@@ -111,7 +113,9 @@ def run_search_ui(router, live):
         tbl.add_row(f"{i:02d}", cat[:12], str(code), fmt_label(label), typ)
     console.print(Padding(tbl, (0, 2)))
     console.print(Text.from_markup(f"  [{C.C_DIM}]{len(matches)} result(s)[/]"))
-    pick = input(f"\n{ansi_hex(C.C_MID)}  # (Entrée = retour) >> \033[0m").strip()
+    pick = input(
+        f"\n{ansi_hex(C.C_MID)}  # ({t('Entrée = retour', 'Enter = back')}) >> \033[0m"
+    ).strip()
     if pick.isdigit() and 1 <= int(pick) <= min(30, len(matches)):
         _, _, _, lbl, act = matches[int(pick) - 1]
         router._run_tool(live, act, lbl)

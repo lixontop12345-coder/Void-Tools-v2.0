@@ -102,7 +102,6 @@ if __name__ == "__main__":
             border_style="red", padding=(0, 6)
         )))
         afficher(ip, data)
-        console.input(" [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
 
     except (KeyboardInterrupt, EOFError):
         pass

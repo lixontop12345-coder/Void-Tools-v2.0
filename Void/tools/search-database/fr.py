@@ -108,7 +108,5 @@ if __name__ == "__main__":
             console.print(Align.center(tbl))
             console.print(Align.center(f"\n [bold bright_green][✓] {len(results)} occurrences trouvées [/][dim]({count} fichiers analysés)[/]"))
 
-        console.input("\n [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
-
     except (KeyboardInterrupt, EOFError):
         pass

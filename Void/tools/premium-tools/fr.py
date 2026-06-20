@@ -81,7 +81,6 @@ def main(tool_name):
     console.print(Align.center(pnl))
     open_premium_links()
     console.print("\n")
-    console.input(Align.center(" [dim]Appuyez sur [bold gold1]ENTRÉE[/] pour revenir...[/]"))
 
 if __name__ == "__main__":
     name = sys.argv[1] if len(sys.argv) > 1 else "Unknown Module"

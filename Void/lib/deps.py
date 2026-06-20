@@ -12,6 +12,7 @@ REQUIRED = [
 OPTIONAL = [
     ("dns.resolver", "dnspython"),
     ("requests", "requests"),
+    ("pyzipper", "pyzipper"),
 ]
 
 

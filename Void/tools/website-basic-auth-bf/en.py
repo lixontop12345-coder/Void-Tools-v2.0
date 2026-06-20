@@ -49,7 +49,6 @@ def boot():
         sys.stdout.write("\033[?25h\033[0m")
     os.system("cls" if os.name == "nt" else "clear")
 
-
 DEFAULT_USERS = ["admin", "root", "administrator", "user", "test", "webmaster", "guest"]
 DEFAULT_PASSWORDS = ["admin", "123456", "12345678", "password", "admin123", "root", "1234", "qwerty", "test", "0000"]
 
@@ -111,6 +110,6 @@ if __name__ == "__main__":
         if not found:
             console.print(f" [bold red][x] Failed.[/] [dim]No combination worked.[/]")
             console.print(f" [dim][!] Password is secure. Try to use a huge [bold white]Custom Wordlist[/] text file next time![/]")
-        console.input("\n [dim]Press [bold red]ENTER[/] to exit...[/]")
+
     except (KeyboardInterrupt, EOFError): pass
 

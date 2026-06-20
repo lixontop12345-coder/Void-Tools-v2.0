@@ -95,7 +95,6 @@ if __name__ == "__main__":
             border_style="red", padding=(0, 6)
         )))
         console.print(Align.center(tbl))
-        console.input("\n [dim]Press [bold red]ENTER[/] to exit...[/]")
 
     except (KeyboardInterrupt, EOFError):
         pass

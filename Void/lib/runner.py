@@ -19,27 +19,44 @@ SELF_PAUSE_DIRS = (
 def run_script(fr_path, en_path, tool_name=None, extra_args=None):
     """Run fr/en tool script with saved language."""
     s = get_settings()
-    lang = s.lang if s.lang in ("fr", "en") else "fr"
+    s.reload()
+    lang = s.lang
     src = fr_path if lang == "fr" else en_path
+    if not os.path.exists(src) and lang == "en":
+        src = fr_path
 
     if not os.path.exists(src):
-        error_box("Script absent", os.path.basename(src), src)
+        from .i18n import t
+        error_box(
+            t("Script absent", "Script missing"),
+            os.path.basename(src),
+            src,
+        )
         pause()
         return
 
     try:
+        env = os.environ.copy()
+        env["VOID_LANG"] = lang
         cmd = [sys.executable, src]
         if tool_name:
             cmd.append(tool_name)
         if extra_args:
             cmd.extend(extra_args)
-        result = subprocess.run(cmd, shell=False)
+        result = subprocess.run(cmd, shell=False, env=env)
         if result.returncode not in (0, None):
-            error_box("Tool error", tool_name or os.path.basename(src), f"exit {result.returncode}")
+            from .i18n import t
+            error_box(
+                t("Erreur outil", "Tool error"),
+                tool_name or os.path.basename(src),
+                f"exit {result.returncode}",
+            )
     except FileNotFoundError:
-        error_box("Python introuvable", sys.executable or "python")
+        from .i18n import t
+        error_box(t("Python introuvable", "Python not found"), sys.executable or "python")
     except Exception as e:
-        error_box("Runtime", tool_name or "tool", str(e))
+        from .i18n import t
+        error_box(t("Erreur", "Error"), tool_name or "tool", str(e))
 
     if not any(d in src for d in SELF_PAUSE_DIRS):
         pause()
@@ -87,6 +104,20 @@ def run_nuker(action=None):
     except Exception as e:
         error_box("NUKER", action or "menu", str(e))
     pause()
+
+
+def run_selfbot():
+    """Launch Void Selfbot — token prompt + subprocess main.py."""
+    cls()
+    from .selfbot_launcher import launch_void_selfbot
+
+    try:
+        launch_void_selfbot()
+    except SystemExit:
+        return
+    except Exception as e:
+        error_box("SELFBOT", "Void Selfbot", str(e))
+        pause()
 
 
 def run_plugin(plugin_path):

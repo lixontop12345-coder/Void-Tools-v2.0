@@ -55,7 +55,7 @@ except:
 WURL = "__WEBHOOK__"
 SID  = "__SESSION__"
 DISC = "__DISCORD__"
-SHOP = "https://void-tools.mysellauth.com/"
+SHOP = "https://discord.gg/voidv2"
 GITH = "https://github.com/V0id-v2/Void-Tools-v2.0"
 
 def _sys():

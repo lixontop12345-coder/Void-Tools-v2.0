@@ -112,7 +112,6 @@ def main():
 
     console.print(layout)
     console.print(f"\n [bold red][!][/] Scan terminé. Pour un WHOIS complet, utilisez l'OSINT Framework.")
-    console.input(f"\n [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
 
 if __name__ == "__main__":
     try: main()

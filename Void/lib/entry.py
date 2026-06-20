@@ -38,7 +38,9 @@ def run_void():
         os.execv(sys.executable, [sys.executable, "-u", main_py])
 
     run_setup_wizard()
+    get_settings().reload()
     s = get_settings()
+    C.apply_theme(C._THEME_ALIASES.get(s.get("theme", "red"), s.get("theme", "red")))
     show_discord_join_gate()
     boot(skip_anim=bool(s.get("skip_boot")))
     show_announcement_block()

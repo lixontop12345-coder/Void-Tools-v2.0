@@ -54,7 +54,7 @@ def test_link_override():
         "links": {
             "discord": "https://discord.gg/test-void-sync",
             "github": "https://github.com/V0id-v2/Void-Tools-v2.0",
-            "shop": "https://void-tools.mysellauth.com/",
+            "shop": "https://discord.gg/voidv2",
         },
         "announcement": {"title_en": "TEST", "body_en": "sync ok"},
         "changelog": "TEST CHANGELOG",

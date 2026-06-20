@@ -1,4 +1,5 @@
 """First-run setup wizard — light, no lag."""
+import msvcrt
 import time
 
 from rich.align import Align
@@ -10,7 +11,7 @@ from rich import box
 from . import constants as C
 from .config import get_settings
 from .remote import config_rev
-from .void_common import ansi_hex, cls, console, read_console_key
+from .void_common import ansi_hex, cls, console, poll_console_key, read_console_key
 
 
 def setup_required(force=False):
@@ -74,12 +75,13 @@ def _skip_block(fr, skip_yes):
 
 def _color_preview(key):
     if key == "rainbow":
-        bars = " ".join(f"[{C.rainbow_hex(i / 7.0)}]██[/]" for i in range(8))
+        phase = (time.time() * 0.25) % 1.0
+        bars = " ".join(f"[{C.rainbow_hex(phase + i / 7.0)}]██[/]" for i in range(8))
         return Panel(
             Align.center(Text.from_markup(
-                f"{bars}\n[bold {C.rainbow_hex(0.33)}]RAINBOW[/]"
+                f"{bars}\n[bold {C.rainbow_hex(phase + 0.33)}]RAINBOW[/]"
             )),
-            border_style=C.rainbow_hex(0.15),
+            border_style=C.rainbow_hex(phase + 0.15),
             box=box.ROUNDED,
             padding=(1, 2),
         )
@@ -170,6 +172,19 @@ def _draw(step, fr, sel_lang, sel_color, name_buf, sel_skip):
     console.print(foot)
 
 
+def _wait_key(step, fr, sel_lang, sel_color, name_buf, sel_skip):
+    """Bloque jusqu'à une touche ; anime l'aperçu rainbow en continu."""
+    if step == 2 and COLOR_OPTIONS[sel_color][0] == "rainbow":
+        while True:
+            _draw(step, fr, sel_lang, sel_color, name_buf, sel_skip)
+            if msvcrt.kbhit():
+                k = poll_console_key()
+                if k is not None:
+                    return k
+            time.sleep(1 / 15)
+    return read_console_key()
+
+
 def _save(fr, s):
     cls()
     console.print(Panel(Align.center(Text.from_markup(f"[bold {C.C_GOLD}]{_t('save', fr)}[/]")),
@@ -216,7 +231,7 @@ def run_setup_wizard(force=False):
 
     while step <= 4:
         _draw(step, fr, sel_lang, sel_color, name_buf, sel_skip)
-        key = read_console_key()
+        key = _wait_key(step, fr, sel_lang, sel_color, name_buf, sel_skip)
 
         if key in (b"H", b"P"):
             if step == 1:

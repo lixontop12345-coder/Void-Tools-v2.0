@@ -121,7 +121,5 @@ if __name__ == "__main__":
         if dmarc_res: dns_tbl.add_row("DMARC", "\n".join(dmarc_res))
         console.print(Align.center(dns_tbl))
 
-        console.input("\n [dim]Press [bold red]ENTER[/] to exit...[/]")
-
     except (KeyboardInterrupt, EOFError):
         pass

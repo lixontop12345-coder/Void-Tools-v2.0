@@ -5,7 +5,7 @@ import webbrowser
 from . import constants as C
 from . import tools as T
 from .remote import tool_remote_sync
-from .runner import run, run_discord, run_roblox, run_social, run_webhook, run_premium, run_nuker
+from .runner import run, run_discord, run_roblox, run_social, run_webhook, run_premium, run_nuker, run_selfbot
 
 _NUKER_ACTIONS = [
     ("01", "Nuke"), ("02", "Auto Raid"), ("03", "Ban All"), ("04", "Kick All"),
@@ -49,12 +49,14 @@ def _discord_pages():
     return [
         ("01", "Token Checker", _d("token-checker")),
         ("02", "User Lookup", _d("user-lookup")),
-        ("03", "Invite Resolver", _d("invite-resolver")),
-        ("04", "Token Bruteforce", _d("token-bruteforce")),
-        ("05", "Token Login", _d("token-login")),
-        ("06", "Status Rotator", _d("status-rotator")),
-        ("07", "Token Onliner", _d("token-onliner")),
-        ("08", "Guild Leaver", _d("guild-leaver")),
+        ("03", "Server Lookup", _d("server-lookup")),
+        ("04", "Server Compare", _d("server-compare")),
+        ("05", "Vanity Checker", _d("vanity-checker")),
+        ("06", "Token Bruteforce", _d("token-bruteforce")),
+        ("07", "Token Login", _d("token-login")),
+        ("08", "Status Rotator", _d("status-rotator")),
+        ("09", "Token Onliner", _d("token-onliner")),
+        ("10", "Guild Leaver", _d("guild-leaver")),
         ("12", "Token-Generator [PREMIUM]", _p("Token-Generator")),
         ("13", "Token-Joiner [PREMIUM]", _p("Token-Joiner")),
         ("14", "Token-Nuker [PREMIUM]", _p("Token-Nuker")),
@@ -106,16 +108,19 @@ def _social_pages():
         ("06", "Instagram Profile", _s("instagram-profile")),
         ("07", "Snapchat Check", _s("snapchat-check")),
         ("08", "Telegram Channel", _s("telegram-channel")),
-        ("09", "TikTok-Follow [PREMIUM]", _p("TikTok-Follow")),
-        ("10", "TikTok-Like [PREMIUM]", _p("TikTok-Like")),
-        ("11", "TikTok-Views [PREMIUM]", _p("TikTok-Views")),
-        ("12", "Instagram-Follow [PREMIUM]", _p("Instagram-Follow")),
-        ("13", "Instagram-Like [PREMIUM]", _p("Instagram-Like")),
-        ("14", "YouTube-Views [PREMIUM]", _p("YouTube-Views")),
-        ("15", "YouTube-Like [PREMIUM]", _p("YouTube-Like")),
-        ("16", "X-Follow [PREMIUM]", _p("X-Follow")),
-        ("17", "X-Like [PREMIUM]", _p("X-Like")),
-        ("18", "Telegram-Member [PREMIUM]", _p("Telegram-Member")),
+        ("09", "GitHub Profile", _s("github-profile")),
+        ("10", "Kick Profile", _s("kick-profile")),
+        ("11", "Minecraft Profile", _s("minecraft-profile")),
+        ("12", "TikTok-Follow [PREMIUM]", _p("TikTok-Follow")),
+        ("13", "TikTok-Like [PREMIUM]", _p("TikTok-Like")),
+        ("14", "TikTok-Views [PREMIUM]", _p("TikTok-Views")),
+        ("15", "Instagram-Follow [PREMIUM]", _p("Instagram-Follow")),
+        ("16", "Instagram-Like [PREMIUM]", _p("Instagram-Like")),
+        ("17", "YouTube-Views [PREMIUM]", _p("YouTube-Views")),
+        ("18", "YouTube-Like [PREMIUM]", _p("YouTube-Like")),
+        ("19", "X-Follow [PREMIUM]", _p("X-Follow")),
+        ("20", "X-Like [PREMIUM]", _p("X-Like")),
+        ("21", "Telegram-Member [PREMIUM]", _p("Telegram-Member")),
     ]
 
 
@@ -157,6 +162,12 @@ def _nuker_pages():
     return items
 
 
+def _selfbot_pages():
+    return [
+        ("01", "Void Selfbot v2", lambda: run_selfbot()),
+    ]
+
+
 def build_pages_data(plugin_items=None):
     plugin_items = plugin_items or []
     pages = {
@@ -170,6 +181,7 @@ def build_pages_data(plugin_items=None):
             ("07", "Credits", T.tool_credits),
             ("08", "Setup Config", lambda: __import__("lib.setup", fromlist=["x"]).run_setup_wizard(force=True)),
             ("09", "Liens / MAJ", tool_remote_sync),
+            ("10", "Void Selfbot v2", lambda: run_selfbot()),
             ("Q", "Quit System", lambda: sys.exit(0)),
         ],
         "osint": [
@@ -200,9 +212,10 @@ def build_pages_data(plugin_items=None):
             ("07", "DDOS [PREMIUM]", _p("DDOS")),
             ("08", "Token-Bomber [PREMIUM]", _p("Token Bomber")),
             ("09", "Admin-Panel [PREMIUM]", _p("Admin-Panel")),
-            ("10", "Discord-SelfBot [PREMIUM]", _p("Discord-SelfBot")),
+            ("10", "Discord-SelfBot [PREMIUM]", lambda: run_selfbot()),
         ],
         "nuker": _nuker_pages(),
+        "selfbot": _selfbot_pages(),
         "discord": _discord_pages(),
         "webhook": _webhook_pages(),
         "social": _social_pages(),

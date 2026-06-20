@@ -62,19 +62,36 @@ def boot():
     os.system("cls" if os.name == "nt" else "clear")
 
 async def get_leaks(target):
-    # Switching to LeakCheck Public API (STABLE & NO KEY REQUIRED)
     try:
         async with aiohttp.ClientSession() as session:
-            headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Void-Tools-Prime"}
-            async with session.get(f"https://leakcheck.io/api/v2/public/{target}", headers=headers) as r:
-                if r.status == 200:
-                    data = await r.json()
-                    if data.get("success"):
-                        return [{"Name": b, "BreachDate": "N/A", "DataClasses": ["Check Deep for more..."]} for b in data.get("sources", [])]
+            headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Void-Tools"}
+            url = f"https://leakcheck.io/api/public?check={target}"
+            async with session.get(url, headers=headers, timeout=15) as r:
+                if r.status != 200:
+                    return None
+                data = await r.json()
+                if not data.get("success"):
                     return []
-                elif r.status == 404: return []
-                else: return None
-    except: return None
+                sources = data.get("sources") or []
+                if not sources and not data.get("found"):
+                    return []
+                leaks = []
+                for src in sources:
+                    if isinstance(src, dict):
+                        leaks.append({
+                            "Name": src.get("name", "Unknown"),
+                            "BreachDate": src.get("date", "N/A"),
+                            "DataClasses": data.get("fields") or ["email", "password"],
+                        })
+                    else:
+                        leaks.append({
+                            "Name": str(src),
+                            "BreachDate": "N/A",
+                            "DataClasses": data.get("fields") or ["email", "password"],
+                        })
+                return leaks
+    except Exception:
+        return None
 
 def main():
     boot()
@@ -148,8 +165,6 @@ def main():
             
         console.print(table)
         console.print(f"\n [bold red][!][/] ALERT: {len(leaks)} instances of compromise found.")
-
-    console.input(f"\n [dim]Press [bold red]ENTER[/] to exit...[/]")
 
 if __name__ == "__main__":
     try: main()

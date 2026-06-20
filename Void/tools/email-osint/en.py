@@ -199,8 +199,6 @@ def main():
     else:
         console.print("\n [bold red][!][/] No public accounts identified.")
 
-    console.input(f"\n [dim]Press [bold red]ENTER[/] to exit...[/]")
-
 if __name__ == "__main__":
     try: main()
     except KeyboardInterrupt: sys.exit()

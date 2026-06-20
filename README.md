@@ -7,7 +7,7 @@
 [![⬇ Download](https://img.shields.io/badge/⬇_Download-v2.5-FF2020?style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/archive/refs/heads/main.zip)
 [![Telegram](https://img.shields.io/badge/Telegram-t.me/v0idtool-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/v0idtool)
 [![Discord](https://img.shields.io/badge/Discord-discord.gg/voidv2-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/voidv2)
-[![Shop](https://img.shields.io/badge/Shop-Premium-FFD700?style=for-the-badge&logo=shopify&logoColor=black)](https://void-tools.mysellauth.com/)
+[![Shop](https://img.shields.io/badge/Shop-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/voidv2)
 
 <br>
 
@@ -198,7 +198,7 @@ IP geolocation, WHOIS-style data, port checks, ping, web scanners, subdomain too
 
 </details>
 
-> ⭐ = Premium · [void-tools shop](https://void-tools.mysellauth.com/)
+> ⭐ = Premium · [Discord shop](https://discord.gg/voidv2)
 
 ---
 
@@ -338,7 +338,7 @@ Discord, shop & GitHub links update via [`remote-manifest.json`](Void/config/rem
 [![⭐ Star](https://img.shields.io/badge/⭐_STAR_FOR_UPDATES-FF2020?style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/stargazers)
 [![Telegram](https://img.shields.io/badge/Telegram-t.me/v0idtool-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/v0idtool)
 [![Discord](https://img.shields.io/badge/Discord-discord.gg/voidv2-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/voidv2)
-[![Shop](https://img.shields.io/badge/Get-Premium-FFD700?style=for-the-badge&logo=shopify&logoColor=black)](https://void-tools.mysellauth.com/)
+[![Shop](https://img.shields.io/badge/Get-Premium-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/voidv2)
 
 <br>
 

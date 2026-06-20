@@ -51,7 +51,6 @@ def boot():
         sys.stdout.write("\033[?25h\033[0m")
     os.system("cls" if os.name == "nt" else "clear")
 
-
 SUBS = ["www", "dev", "test", "admin", "staging", "mail", "blog", "webmail", "server", "ns1", "ns2", "smtp", "secure", "vpn", "api", "portal", "beta", "web", "ftp", "cpanel", "shop", "forum", "support"]
 
 def check_sub(dom, sub):
@@ -88,6 +87,6 @@ if __name__ == "__main__":
         
         console.print()
         console.print(f" [bold green][✓] Terminé. {len(found)} sous-domaines trouvés.[/]")
-        console.input(" [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
+
     except (KeyboardInterrupt, EOFError): pass
 

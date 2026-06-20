@@ -127,8 +127,6 @@ if __name__ == "__main__":
             else:
                 console.print(" [bold red][!] Échec de l'envoi au Webhook.[/]")
 
-        console.input("\n [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
-
     except (KeyboardInterrupt, EOFError):
         pass
     except Exception as e:

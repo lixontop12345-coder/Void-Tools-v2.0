@@ -206,8 +206,6 @@ def main():
     else:
         console.print("\n [bold red][!][/] Aucun compte public identifié.")
 
-    console.input(f"\n [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
-
 if __name__ == "__main__":
     try: main()
     except KeyboardInterrupt: sys.exit()

@@ -507,12 +507,12 @@ def tool_credits():
     console.print(); input(f"\033[38;2;136;0;0m  press enter...\033[0m")
 
 def tool_premium_shop():
-    _panel("PREMIUM SHOP", "Acheter VOID PREMIUM")
+    _panel("PREMIUM SHOP", "Shop premium sur Discord")
     console.print(Text.from_markup(
         f"\n[{C_GOLD} bold]  * VOID PREMIUM\n"
-        f"[{C_WHITE}]  Shop officiel · support Discord [bold]{C.AUTHOR}[/]\n"
-        f"[{C_GOLD2}]{C.SHOP}[/]\n"
-        f"[{C_DIM}]{C.DISCORD}[/]"
+        f"[{C_WHITE}]  Achats & support sur le Discord officiel\n"
+        f"[{C_GOLD2}]{C.DISCORD}[/]\n"
+        f"[{C_DIM}]{C.TELEGRAM}[/]"
     ))
     open_premium_links()
     console.print(); input(f"\033[38;2;136;0;0m  press enter...\033[0m")

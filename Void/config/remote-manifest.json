@@ -12,8 +12,9 @@
   "links": {
     "telegram": "https://t.me/v0idtool",
     "discord": "https://discord.gg/voidv2",
+    "discord_dawa": "https://discord.gg/dawa",
     "github": "https://github.com/V0id-v2/Void-Tools-v2.0",
-    "shop": "https://void-tools.mysellauth.com/"
+    "shop": "https://discord.gg/voidv2"
   },
   "changelog": "VOID-TOOLS v2.5.0\n- Discord reopened: discord.gg/voidv2 + Telegram t.me/v0idtool\n- Startup opens both Telegram and Discord automatically\n- HOME · manifest · webhooks · branding updated\n\nVOID-TOOLS v2.4.0\n- Community on Telegram t.me/v0idtool\n- Join screen on startup"
 }

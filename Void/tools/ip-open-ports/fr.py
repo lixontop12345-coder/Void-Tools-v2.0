@@ -61,7 +61,6 @@ def boot():
         sys.stdout.write("\033[?25h\033[0m")
     os.system("cls" if os.name == "nt" else "clear")
 
-
 def scan_port(ip, port):
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -69,7 +68,6 @@ def scan_port(ip, port):
             return port, s.connect_ex((ip, port)) == 0
     except Exception:
         return port, False
-
 
 def afficher(ip, results):
     ouverts = [(p, PORTS.get(p, "?"), True) for p, o in sorted(results.items()) if o]
@@ -98,7 +96,6 @@ def afficher(ip, results):
         svc_list = "  ".join(f"[red]{p}[/][dim]/{svc}[/]" for p, svc, _ in ouverts)
         console.print(Align.center(f"[dim]Services exposés :[/]  {svc_list}"))
         console.print()
-
 
 if __name__ == "__main__":
     try:
@@ -139,7 +136,6 @@ if __name__ == "__main__":
                     prog.advance(task)
 
         afficher(ip, results)
-        console.input(" [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
 
     except (KeyboardInterrupt, EOFError):
         console.print("\n[red] [!] Scan interrompu.[/]")

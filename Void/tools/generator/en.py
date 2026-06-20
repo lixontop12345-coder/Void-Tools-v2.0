@@ -25,13 +25,11 @@ GENERATORS = {
     "7": {"name": "Spotify",     "format": "XXXX-XXXX-XXXX-XXXX-XXXX-XX", "blocks": [4, 4, 4, 4, 4, 2], "file": "spotify.txt"},
 }
 
-
 def generate_code(blocks):
     return "-".join(
         ''.join(random.choice(CHARACTERS) for _ in range(n))
         for n in blocks
     )
-
 
 def ask_count(prompt):
     while True:
@@ -42,7 +40,6 @@ def ask_count(prompt):
             console.print("[bold red][!] Enter a number greater than 0.[/bold red]")
         except ValueError:
             console.print("[bold red][!] Invalid input. Enter an integer.[/bold red]")
-
 
 def run_generator(key):
     cfg = GENERATORS[key]
@@ -98,7 +95,6 @@ def run_generator(key):
     except OSError as e:
         console.print(f"[bold red][!] Could not save: {e}[/bold red]")
 
-
 def show_menu():
     console.print()
     console.print(Panel(
@@ -118,7 +114,6 @@ def show_menu():
 
     console.print(table)
 
-
 def main():
     try:
         while True:
@@ -133,13 +128,12 @@ def main():
             elif choice in GENERATORS:
                 run_generator(choice)
                 console.print()
-                console.input("[dim]Press Enter to continue...[/dim]")
+
             else:
                 console.print(f"[bold red][!] Unknown option '{choice}'.[/bold red]")
 
     except (KeyboardInterrupt, EOFError):
         console.print("\n[bold red][!] Interrupted.[/bold red]")
-
 
 if __name__ == "__main__":
     main()

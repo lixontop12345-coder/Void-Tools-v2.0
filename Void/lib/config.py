@@ -34,6 +34,10 @@ class Settings:
                 pass
         C.apply_theme(C._THEME_ALIASES.get(self.data.get("theme", "red"), self.data.get("theme", "red")))
 
+    def reload(self):
+        """Re-read settings.json (language changes, etc.)."""
+        self.load()
+
     def save(self):
         os.makedirs(C.CONFIG_DIR, exist_ok=True)
         with open(C.SETTINGS_PATH, "w", encoding="utf-8") as f:
@@ -49,7 +53,8 @@ class Settings:
 
     @property
     def lang(self):
-        return self.data.get("language", "en")
+        raw = str(self.data.get("language") or self.data.get("lang") or "en").strip().lower()
+        return raw if raw in ("fr", "en") else "en"
 
     @property
     def username(self):

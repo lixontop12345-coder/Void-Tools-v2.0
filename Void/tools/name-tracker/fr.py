@@ -127,7 +127,5 @@ if __name__ == "__main__":
             if ask in ("oui", "o", "yes", "y"):
                 for _, _, url in trouves: webbrowser.open(url)
 
-        console.input("\n [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
-
     except (KeyboardInterrupt, EOFError):
         pass

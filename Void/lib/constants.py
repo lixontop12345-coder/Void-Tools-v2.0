@@ -16,13 +16,16 @@ TELEGRAM = "https://t.me/v0idtool"
 TELEGRAM_TAG = "t.me/v0idtool"
 DISCORD = "https://discord.gg/voidv2"
 DISCORD_TAG = "discord.gg/voidv2"
-SHOP = "https://void-tools.mysellauth.com/"
+DISCORD_DAWA = "https://discord.gg/dawa"
+DISCORD_DAWA_TAG = "discord.gg/dawa"
+SHOP = DISCORD
 AUTHOR = "1s0e"
 
 VOID_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_DIR = os.path.dirname(VOID_DIR)
 CONFIG_DIR = os.path.join(VOID_DIR, "config")
 DATA_DIR = os.path.join(VOID_DIR, "data")
+COMBOLIST_DIR = os.path.join(DATA_DIR, "combolists")
 SETTINGS_PATH = os.path.join(CONFIG_DIR, "settings.json")
 NUKER_CFG_PATH = os.path.join(CONFIG_DIR, "discord-nuker.json")
 CUSTOM_TOOLS_DIR = os.path.join(VOID_DIR, "tools", "custom")
@@ -206,9 +209,13 @@ def sp_nuker():
     return os.path.join(VOID_DIR, "tools", "void-nuke", "main.py")
 
 
+def sp_selfbot_launcher():
+    return os.path.join(VOID_DIR, "tools", "void-selfbot", "launch.py")
+
+
 def apply_theme(name: str):
     global C_BLOOD, C_DARK, C_MID, C_RED, C_NEON, C_BRIGHT, _ACTIVE_THEME
-    name = _THEME_ALIASES.get(name, name)
+    name = _THEME_ALIASES.get(str(name or "red").strip().lower(), str(name or "red").strip().lower())
     if name != "rainbow" and name not in THEMES:
         name = "red"
     _ACTIVE_THEME = name

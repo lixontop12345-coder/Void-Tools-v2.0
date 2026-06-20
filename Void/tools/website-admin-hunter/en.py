@@ -51,7 +51,6 @@ def boot():
         sys.stdout.write("\033[?25h\033[0m")
     os.system("cls" if os.name == "nt" else "clear")
 
-
 PANELS = ["admin", "administrator", "wp-admin", "wp-login.php", "cpanel", "login", "admin/login", "dashboard", "manage", "manager", "admin.php", "admin.html", "user", "users", "panel", "webadmin"]
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0"
 
@@ -92,6 +91,6 @@ if __name__ == "__main__":
         
         console.print()
         console.print(f" [bold green][✓] Done. Found {len(found)} panels.[/]")
-        console.input(" [dim]Press [bold red]ENTER[/] to exit...[/]")
+
     except (KeyboardInterrupt, EOFError): pass
 

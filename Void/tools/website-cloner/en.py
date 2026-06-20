@@ -110,7 +110,6 @@ if __name__ == "__main__":
             console.print(f" [bold red][x] Cloning failed :[/] {error_msg}")
 
         console.print()
-        console.input(" [dim]Press [bold red]ENTER[/] to exit...[/]")
 
     except (KeyboardInterrupt, EOFError):
         pass

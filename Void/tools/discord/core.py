@@ -192,6 +192,149 @@ def _parse_invite(raw):
     return raw.split("/")[-1].split("?")[0]
 
 
+def _export_dir():
+    path = os.path.join(C.DATA_DIR, "exports")
+    os.makedirs(path, exist_ok=True)
+    return path
+
+
+def _save_json(name, payload):
+    path = os.path.join(_export_dir(), name)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2, ensure_ascii=False)
+    return path
+
+
+def _download(url, path):
+    try:
+        r = requests.get(url, timeout=15, headers={"User-Agent": UA})
+        if r.status_code == 200:
+            with open(path, "wb") as f:
+                f.write(r.content)
+            return True
+    except requests.RequestException:
+        pass
+    return False
+
+
+_VERIFICATION_LABELS = {0: "None", 1: "Low", 2: "Medium", 3: "High", 4: "Very High"}
+
+
+def _fetch_invite(code):
+    return _api(
+        "GET",
+        f"https://discord.com/api/v9/invites/{code}?with_counts=true&with_expiration=true",
+    )
+
+
+def _invite_summary(code, status, data):
+    data = _as_dict(data)
+    if status != 200:
+        return {"code": code, "ok": False, "error": data.get("message", f"HTTP {status}")}
+    guild = _as_dict(data.get("guild"))
+    channel = _as_dict(data.get("channel"))
+    members = data.get("approximate_member_count")
+    online = data.get("approximate_presence_count")
+    features = guild.get("features") or []
+    verification = guild.get("verification_level", "?")
+    online_rate = (
+        round(online / members * 100, 1)
+        if isinstance(members, int) and isinstance(online, int) and members
+        else None
+    )
+    return {
+        "code": code, "ok": True,
+        "server": guild.get("name", "?"), "id": guild.get("id", "?"),
+        "description": (guild.get("description") or "-")[:120],
+        "members": members if members is not None else "?",
+        "online": online if online is not None else "?",
+        "online_rate": online_rate,
+        "boosts": guild.get("premium_subscription_count", "?"),
+        "tier": guild.get("premium_tier", "?"),
+        "verification": verification,
+        "verification_label": _VERIFICATION_LABELS.get(verification, str(verification)),
+        "nsfw_level": guild.get("nsfw_level", "?"),
+        "features": features,
+        "features_text": ", ".join(features) or "-",
+        "feature_count": len(features),
+        "vanity": guild.get("vanity_url_code") or "-",
+        "channel": channel.get("name", "?"),
+        "expires": data.get("expires_at") or t("never"),
+        "link": f"https://discord.gg/{code}",
+    }
+
+
+def _as_int(value):
+    return value if isinstance(value, int) else None
+
+
+def _as_num(value):
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    return None
+
+
+def _cell(value, highlight=False):
+    if highlight:
+        return f"[bold {C_OK}]{value}[/]"
+    return str(value)
+
+
+def _delta_text(a, b, suffix="", pct_base=None):
+    fa, fb = _as_num(a), _as_num(b)
+    if fa is None or fb is None:
+        return "-"
+    diff = fa - fb
+    if diff == 0:
+        return f"[{C.C_DIM}]same[/]"
+    sign = "+" if diff > 0 else ""
+    is_int = isinstance(a, int) and isinstance(b, int) and not suffix
+    text = f"{sign}{int(diff) if is_int else round(diff, 1)}{suffix}"
+    if pct_base and pct_base > 0:
+        pct = round(abs(diff) / float(pct_base) * 100, 1)
+        text += f" ({pct}%)"
+    return f"[{C_OK}]{text}[/]" if diff > 0 else f"[{C_ERR}]{text}[/]"
+
+
+def _winner_label(side, a_val, b_val):
+    fa, fb = _as_num(a_val), _as_num(b_val)
+    if fa is None or fb is None or fa == fb:
+        return f"[{C.C_DIM}]tie[/]"
+    return f"[{C_OK}]{side}[/]" if fa > fb else f"[{C_OK}]B[/]"
+
+
+def _compare_insights(sa, sb):
+    rows = [
+        (t("sc_member_diff"), _delta_text(sa["members"], sb["members"], pct_base=_as_int(sb["members"]) or _as_int(sa["members"]))),
+        (t("sc_online_diff"), _delta_text(sa["online"], sb["online"], pct_base=_as_int(sb["online"]) or _as_int(sa["online"]))),
+        (t("sc_boost_diff"), _delta_text(sa["boosts"], sb["boosts"])),
+        (t("sc_feature_diff"), _delta_text(sa["feature_count"], sb["feature_count"])),
+    ]
+    if sa.get("online_rate") is not None and sb.get("online_rate") is not None:
+        rate_diff = round(sa["online_rate"] - sb["online_rate"], 1)
+        if rate_diff == 0:
+            rows.append((t("sc_rate_diff"), f"[{C.C_DIM}]same[/]"))
+        else:
+            sign = "+" if rate_diff > 0 else ""
+            color = C_OK if rate_diff > 0 else C_ERR
+            rows.append((t("sc_rate_diff"), f"[{color}]{sign}{rate_diff}%[/]"))
+    rows.extend([
+        (t("sc_members_win"), _winner_label("A", sa["members"], sb["members"])),
+        (t("sc_online_win"), _winner_label("A", sa["online"], sb["online"])),
+        (t("sc_activity_win"), _winner_label("A", sa.get("online_rate"), sb.get("online_rate"))),
+        (t("sc_boosts_win"), _winner_label("A", sa["boosts"], sb["boosts"])),
+    ])
+    fa = set(sa.get("features") or [])
+    fb = set(sb.get("features") or [])
+    only_a = sorted(fa - fb)
+    only_b = sorted(fb - fa)
+    rows.append((t("sc_shared_feat"), str(len(fa & fb))))
+    rows.append((t("sc_only_a"), ", ".join(only_a[:4]) + (" …" if len(only_a) > 4 else "") if only_a else "-"))
+    rows.append((t("sc_only_b"), ", ".join(only_b[:4]) + (" …" if len(only_b) > 4 else "") if only_b else "-"))
+    rows.append((t("community"), f"{C.TELEGRAM_TAG} · {C.DISCORD_TAG}"))
+    return rows
 
 
 def _load_lines(prompt, file_prompt):
@@ -257,28 +400,158 @@ def token_checker():
     ])
 
 
-def invite_resolver():
-    _panel(t("inv_title"), t("inv_desc"))
+def server_lookup():
+    _panel(t("sl_title"), t("sl_desc"))
     raw = _ask(t("inv_prompt"))
     if not raw:
         return
     code = _parse_invite(raw)
-    c, d = _api("GET", f"https://discord.com/api/v9/invites/{code}?with_counts=true&with_expiration=true")
+    c, d = _fetch_invite(code)
     if c != 200:
         _fail(f"{t('inv_invalid')} (HTTP {c})")
         return
     d = _as_dict(d)
-    g = _as_dict(d.get("guild"))
-    _show_table(g.get("name", "Invite"), [
+    guild = _as_dict(d.get("guild"))
+    channel = _as_dict(d.get("channel"))
+    _show_table(t("sl_result"), [
         ("Code", f"[bold]{code}[/]"),
-        (t("server"), g.get("name", "?")),
-        ("ID", g.get("id", "?")),
+        (t("server"), guild.get("name", "?")),
+        ("ID", guild.get("id", "?")),
+        (t("sl_description"), (guild.get("description") or "-")[:200]),
         (t("members"), d.get("approximate_member_count", "?")),
         (t("online"), d.get("approximate_presence_count", "?")),
-        (t("channel"), _as_dict(d.get("channel")).get("name", "?")),
+        (t("channel"), channel.get("name", "?")),
+        ("Channel ID", channel.get("id", "?")),
         (t("expires"), d.get("expires_at") or t("never")),
+        (t("sl_verification"), guild.get("verification_level", "?")),
+        (t("sl_nsfw"), guild.get("nsfw_level", "?")),
+        (t("sl_tier"), guild.get("premium_tier", "?")),
+        (t("sl_boosts"), guild.get("premium_subscription_count", "?")),
+        (t("sl_features"), ", ".join(guild.get("features") or []) or "-"),
+        (t("sl_vanity"), guild.get("vanity_url_code") or "-"),
         ("Link", f"https://discord.gg/{code}"),
+        (t("community"), f"{C.TELEGRAM_TAG} · {C.DISCORD_TAG}"),
     ])
+    gid = guild.get("id")
+    icon = guild.get("icon")
+    banner = guild.get("banner")
+    saved = []
+    if gid and icon:
+        ext = "gif" if str(icon).startswith("a_") else "png"
+        url = f"https://cdn.discordapp.com/icons/{gid}/{icon}.{ext}?size=512"
+        path = os.path.join(_export_dir(), f"server_{gid}_icon.{ext}")
+        if _download(url, path):
+            saved.append(path)
+            _hint(f"+ icon → {path}")
+    if gid and banner:
+        ext = "gif" if str(banner).startswith("a_") else "png"
+        url = f"https://cdn.discordapp.com/banners/{gid}/{banner}.{ext}?size=1024"
+        path = os.path.join(_export_dir(), f"server_{gid}_banner.{ext}")
+        if _download(url, path):
+            saved.append(path)
+            _hint(f"+ banner → {path}")
+    report = _save_json(f"server_lookup_{code}.json", {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "invite_code": code, "guild": guild, "channel": channel,
+        "approximate_member_count": d.get("approximate_member_count"),
+        "approximate_presence_count": d.get("approximate_presence_count"),
+        "expires_at": d.get("expires_at"), "saved_assets": saved,
+    })
+    _hint(f"+ report → {report}")
+
+
+def server_compare():
+    _panel(t("sc_title"), t("sc_desc"))
+    a = _parse_invite(_ask(t("sc_inv1")))
+    b = _parse_invite(_ask(t("sc_inv2")))
+    if not a or not b:
+        return
+    sa = _invite_summary(a, *_fetch_invite(a))
+    sb = _invite_summary(b, *_fetch_invite(b))
+    if not sa["ok"] or not sb["ok"]:
+        _fail(t("inv_invalid"), f"A={sa.get('error')} B={sb.get('error')}")
+        return
+    label_a = f"A · {sa['code']}"
+    label_b = f"B · {sb['code']}"
+    tbl = Table(box=box.SIMPLE, border_style=_pal()["blood"], show_header=True, padding=(0, 1))
+    tbl.add_column(t("sc_field"), style=C.C_SILVER, width=16)
+    tbl.add_column(label_a, overflow="fold", max_width=28)
+    tbl.add_column(label_b, overflow="fold", max_width=28)
+    tbl.add_column(t("sc_delta"), overflow="fold", max_width=18)
+    compare_rows = [
+        (t("server"), sa["server"], sb["server"], "-"),
+        ("ID", sa["id"], sb["id"], "-"),
+        (t("members"), sa["members"], sb["members"], _delta_text(sa["members"], sb["members"], pct_base=_as_int(sb["members"]) or 1)),
+        (t("online"), sa["online"], sb["online"], _delta_text(sa["online"], sb["online"], pct_base=_as_int(sb["online"]) or 1)),
+        (t("sc_online_rate"),
+         f"{sa['online_rate']}%" if sa.get("online_rate") is not None else "-",
+         f"{sb['online_rate']}%" if sb.get("online_rate") is not None else "-",
+         _delta_text(sa.get("online_rate"), sb.get("online_rate"), suffix="%") if sa.get("online_rate") is not None else "-"),
+        (t("sl_boosts"), sa["boosts"], sb["boosts"], _delta_text(sa["boosts"], sb["boosts"])),
+        (t("sl_tier"), f"Tier {sa['tier']}", f"Tier {sb['tier']}", _delta_text(sa["tier"], sb["tier"])),
+        (t("sl_verification"), sa["verification_label"], sb["verification_label"], "-"),
+        (t("sl_nsfw"), sa["nsfw_level"], sb["nsfw_level"], _delta_text(sa["nsfw_level"], sb["nsfw_level"])),
+        (t("sc_features"), sa["feature_count"], sb["feature_count"], _delta_text(sa["feature_count"], sb["feature_count"])),
+        (t("sl_vanity"), sa["vanity"], sb["vanity"], "-"),
+        (t("sc_inv_channel"), sa["channel"], sb["channel"], "-"),
+        (t("expires"), sa["expires"], sb["expires"], "-"),
+    ]
+    hi_fields = {t("members"), t("online"), t("sl_boosts"), t("sc_features")}
+    for field, va, vb, delta in compare_rows:
+        hi_a = field in hi_fields and _as_num(va) is not None and _as_num(vb) is not None and _as_num(va) > _as_num(vb)
+        hi_b = field in hi_fields and _as_num(va) is not None and _as_num(vb) is not None and _as_num(vb) > _as_num(va)
+        tbl.add_row(field, _cell(str(va), hi_a), _cell(str(vb), hi_b), delta)
+    console.print(Padding(Panel(
+        tbl, title=f"[{C.C_GOLD} bold]{t('sc_result')}[/]",
+        border_style=_pal()["blood"], box=box.ROUNDED, padding=(0, 1), width=_tw(),
+    ), (1, 0)))
+    _show_table(t("sc_insights"), _compare_insights(sa, sb))
+    if sa["description"] != "-" or sb["description"] != "-":
+        _show_table(t("sc_descriptions"), [("A", sa["description"]), ("B", sb["description"])])
+    report = _save_json("server_compare.json", {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "a": sa, "b": sb,
+        "insights": {k: v for k, v in _compare_insights(sa, sb)},
+    })
+    _hint(f"+ report → {report}")
+
+
+def vanity_checker():
+    _panel(t("vc_title"), t("vc_desc"))
+    slug = _ask(t("vc_prompt")).strip().lower().replace("https://discord.gg/", "")
+    if not slug or not re.fullmatch(r"[a-z0-9-]{2,32}", slug):
+        _fail(t("vc_invalid"))
+        return
+    c, data = _api("GET", f"https://discord.com/api/v9/invites/{slug}?with_counts=true")
+    data = _as_dict(data)
+    if c == 200:
+        guild = _as_dict(data.get("guild"))
+        vanity = guild.get("vanity_url_code")
+        rows = [
+            (t("vc_slug"), slug),
+            (t("vc_status"), t("vc_taken") if vanity else t("vc_invite_exists")),
+            (t("server"), guild.get("name", "?")),
+            ("ID", guild.get("id", "?")),
+            (t("members"), data.get("approximate_member_count", "?")),
+            (t("online"), data.get("approximate_presence_count", "?")),
+            (t("vc_match"), t("yes") if vanity == slug else f"{t('vc_invite_only')} ({vanity or '-'})"),
+            ("Link", f"https://discord.gg/{slug}"),
+            (t("community"), f"{C.TELEGRAM_TAG} · {C.DISCORD_TAG}"),
+        ]
+    else:
+        rows = [
+            (t("vc_slug"), slug),
+            (t("vc_status"), t("vc_available")),
+            ("HTTP", str(c)),
+            (t("vc_note"), t("vc_probe_note")),
+            (t("community"), f"{C.TELEGRAM_TAG} · {C.DISCORD_TAG}"),
+        ]
+    _show_table(t("vc_result"), rows)
+    report = _save_json(f"vanity_{slug}.json", {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "slug": slug, "http": c, "data": data,
+    })
+    _hint(f"+ report → {report}")
 
 
 def _parse_uid(raw):
@@ -804,7 +1077,9 @@ def status_rotator():
 
 TOOLS = {
     "token-checker": token_checker,
-    "invite-resolver": invite_resolver,
+    "server-lookup": server_lookup,
+    "server-compare": server_compare,
+    "vanity-checker": vanity_checker,
     "user-lookup": user_lookup,
     "token-bruteforce": token_bruteforce,
     "token-login": token_login,

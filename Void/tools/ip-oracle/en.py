@@ -144,7 +144,5 @@ if __name__ == "__main__":
             for p, s in ports: ptbl.add_row(str(p), s)
             console.print(ptbl)
 
-        console.input("\n [dim]Press [bold red]ENTER[/] to exit...[/]")
-
     except (KeyboardInterrupt, EOFError):
         pass

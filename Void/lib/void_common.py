@@ -14,6 +14,7 @@ from rich import box
 
 from . import constants as C
 from .config import get_settings
+from .i18n import t
 
 console = Console(highlight=False)
 
@@ -30,10 +31,52 @@ def open_community_links():
             pass
 
 
-def open_premium_links():
-    """Ouvre shop + Telegram + Discord."""
+def open_first_launch_links():
+    """Premier lancement : Telegram → voidv2 → dawa → GitHub + image star."""
     import webbrowser
-    webbrowser.open(C.SHOP)
+
+    steps = (
+        getattr(C, "TELEGRAM", "https://t.me/v0idtool"),
+        getattr(C, "DISCORD", "https://discord.gg/voidv2"),
+        getattr(C, "DISCORD_DAWA", "https://discord.gg/dawa"),
+    )
+    for url in steps:
+        if not url:
+            continue
+        try:
+            webbrowser.open(url)
+        except Exception:
+            pass
+        time.sleep(0.5)
+
+    try:
+        github = getattr(C, "GITHUB", "")
+        if github:
+            webbrowser.open(github)
+        time.sleep(0.4)
+        star = star_image_path()
+        if os.path.exists(star):
+            if os.name == "nt":
+                os.startfile(star)
+            else:
+                webbrowser.open(star)
+    except Exception:
+        pass
+
+
+def mark_first_launch_done():
+    flag_dir = os.path.join(C.DATA_DIR)
+    os.makedirs(flag_dir, exist_ok=True)
+    flag = os.path.join(flag_dir, ".launched")
+    if not os.path.isfile(flag):
+        with open(flag, "w", encoding="utf-8") as f:
+            f.write("1")
+
+
+def open_premium_links():
+    """Ouvre Discord (shop premium) + Telegram."""
+    import webbrowser
+    webbrowser.open(C.DISCORD)
     open_community_links()
 
 
@@ -81,8 +124,7 @@ def append_star_unlock_items(items):
     """Ajoute 4 slots Star for unlock en bas de catégorie."""
     if not items:
         return items
-    s = get_settings()
-    label = "Star pour débloquer [STAR]" if s.lang == "fr" else "Star for unlock [STAR]"
+    label = t("Star pour débloquer [STAR]", "Star for unlock [STAR]")
     base = len(items)
     extra = []
     for i in range(4):
@@ -138,12 +180,10 @@ def is_arrow(k):
 
 def pause(msg=None):
     console.print()
-    s = get_settings()
     if msg is None:
-        msg = (
-            f"\033[38;2;120;0;0m  ► Entrée pour continuer…\033[0m"
-            if s.lang == "fr"
-            else f"\033[38;2;120;0;0m  ► Press Enter to continue…\033[0m"
+        msg = t(
+            "\033[38;2;120;0;0m  ► Entrée pour continuer…\033[0m",
+            "\033[38;2;120;0;0m  ► Press Enter to continue…\033[0m",
         )
     input(msg)
 
@@ -226,14 +266,22 @@ def safe_action(fn, tool_name: str = "Module"):
     try:
         fn()
     except KeyboardInterrupt:
-        console.print(f"\n[{C.C_DIM}]  ○ {tool_name} — annulé[/]")
+        console.print(f"\n[{C.C_DIM}]  ○ {tool_name} — {t('annulé', 'cancelled')}[/]")
         time.sleep(0.6)
     except FileNotFoundError as e:
-        error_box("Fichier introuvable", str(e), "Vérifie l'installation de Void-Tools.")
+        error_box(
+            t("Fichier introuvable", "File not found"),
+            str(e),
+            t("Vérifie l'installation de Void-Tools.", "Check your Void-Tools installation."),
+        )
         time.sleep(2)
     except subprocess.CalledProcessError as e:
-        error_box("Exécution échouée", tool_name, f"code sortie: {e.returncode}")
+        error_box(
+            t("Exécution échouée", "Execution failed"),
+            tool_name,
+            f"{t('code sortie', 'exit code')}: {e.returncode}",
+        )
         time.sleep(2)
     except Exception as e:
-        error_box("Erreur", tool_name, f"{type(e).__name__}: {e}")
+        error_box(t("Erreur", "Error"), tool_name, f"{type(e).__name__}: {e}")
         time.sleep(2)

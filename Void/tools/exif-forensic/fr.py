@@ -91,12 +91,20 @@ def ask_file():
 
 def get_gps_data(exif_data):
     gps_info = {}
+    if not exif_data:
+        return gps_info
+    if hasattr(exif_data, "get_ifd"):
+        try:
+            for t, val in exif_data.get_ifd(0x8825).items():
+                gps_info[GPSTAGS.get(t, t)] = val
+            return gps_info
+        except Exception:
+            pass
     for tag, value in exif_data.items():
-        tag_name = TAGS.get(tag, tag)
-        if tag_name == "GPSInfo":
-            for t in value:
-                sub_tag = GPSTAGS.get(t, t)
-                gps_info[sub_tag] = value[t]
+        if TAGS.get(tag, tag) == "GPSInfo" and value:
+            for t, val in value.items():
+                gps_info[GPSTAGS.get(t, t)] = val
+            break
     return gps_info
 
 def convert_to_degrees(value):
@@ -107,35 +115,34 @@ def convert_to_degrees(value):
 
 def extract_intel(img_path):
     try:
-        img = Image.open(img_path)
-        exif = img._getexif()
-        if not exif: return None
-        
-        info = {}
-        for tag, value in exif.items():
-            decoded = TAGS.get(tag, tag)
-            info[decoded] = value
-            
-        gps = get_gps_data(exif)
-        results = {
-            "Make": info.get("Make", "Unknown"),
-            "Model": info.get("Model", "Unknown"),
-            "Software": info.get("Software", "Generic"),
-            "DateTime": info.get("DateTime", "Unknown"),
-            "Lat": None, "Lon": None, "MapLink": None
-        }
-        
-        if gps:
-            lat = convert_to_degrees(gps.get("GPSLatitude"))
-            if gps.get("GPSLatitudeRef") != "N": lat = -lat
-            lon = convert_to_degrees(gps.get("GPSLongitude"))
-            if gps.get("GPSLongitudeRef") != "E": lon = -lon
-            results["Lat"] = f"{lat:.6f}"
-            results["Lon"] = f"{lon:.6f}"
-            results["MapLink"] = f"https://www.google.com/maps?q={lat},{lon}"
-            
-        return results
-    except: return None
+        from PIL import Image
+        with Image.open(img_path) as img:
+            img.load()
+            exif = img.getexif() if hasattr(img, "getexif") else img._getexif()
+            if not exif:
+                return None
+            info = {}
+            for tag, value in exif.items():
+                info[TAGS.get(tag, tag)] = value
+            gps = get_gps_data(exif)
+            results = {
+                "Make": info.get("Make", "Unknown"),
+                "Model": info.get("Model", "Unknown"),
+                "Software": info.get("Software", "Generic"),
+                "DateTime": info.get("DateTime", info.get("DateTimeOriginal", "Unknown")),
+                "Lat": None, "Lon": None, "MapLink": None,
+            }
+            if gps.get("GPSLatitude") and gps.get("GPSLongitude"):
+                lat = convert_to_degrees(gps.get("GPSLatitude"))
+                if gps.get("GPSLatitudeRef") not in ("N", b"N"): lat = -lat
+                lon = convert_to_degrees(gps.get("GPSLongitude"))
+                if gps.get("GPSLongitudeRef") not in ("E", b"E"): lon = -lon
+                results["Lat"] = f"{lat:.6f}"
+                results["Lon"] = f"{lon:.6f}"
+                results["MapLink"] = f"https://www.google.com/maps?q={lat},{lon}"
+            return results
+    except Exception:
+        return None
 
 def main():
     boot()
@@ -190,8 +197,6 @@ def main():
         if intel["Lat"]:
             choice = console.input("\n [bold green][✓][/] Géolocalisation trouvée. Ouvrir dans le navigateur ? (o/n) >> ").lower()
             if choice == 'o': webbrowser.open(intel["MapLink"])
-
-    console.input(f"\n [dim]Appuyez sur [bold red]ENTRÉE[/] pour quitter...[/]")
 
 if __name__ == "__main__":
     try: main()

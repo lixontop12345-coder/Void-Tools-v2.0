@@ -53,13 +53,11 @@ def boot():
         sys.stdout.write("\033[?25h\033[0m")
     os.system("cls" if os.name == "nt" else "clear")
 
-
 def detect_vpn(ip):
     url = f"https://proxycheck.io/v2/{ip}?vpn=1&asn=1"
     r = requests.get(url, timeout=TIMEOUT)
     r.raise_for_status()
     return r.json()
-
 
 def afficher(data, ip):
     if data.get("status") != "ok":
@@ -92,7 +90,6 @@ def afficher(data, ip):
     )))
     console.print()
 
-
 if __name__ == "__main__":
     try:
         boot()
@@ -124,7 +121,6 @@ if __name__ == "__main__":
             data = detect_vpn(ip)
 
         afficher(data, ip)
-        console.input(" [dim]Press [bold red]ENTER[/] to exit...[/]")
 
     except requests.RequestException as e:
         console.print(f"\n[red] [!] Network Error :[/] {e}")
