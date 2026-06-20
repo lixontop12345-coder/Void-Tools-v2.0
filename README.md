@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🎉 VOID-TOOLS v2.5 — TELEGRAM + DISCORD !
+# 🎉 VOID-TOOLS v2.6 — SELFBOT + TOOLS !
 
 ### 150+ tools · 13 themes · auto-updates · bilingual UI · Rich terminal dashboard
 
-[![⬇ Download](https://img.shields.io/badge/⬇_Download-v2.5-FF2020?style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/archive/refs/heads/main.zip)
+[![⬇ Download](https://img.shields.io/badge/⬇_Download-v2.6-FF2020?style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/archive/refs/heads/main.zip)
 [![Telegram](https://img.shields.io/badge/Telegram-t.me/v0idtool-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/v0idtool)
 [![Discord](https://img.shields.io/badge/Discord-discord.gg/voidv2-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/voidv2)
 [![Shop](https://img.shields.io/badge/Shop-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/voidv2)
@@ -23,7 +23,7 @@
 
 **Python terminal multitool · OSINT · Discord · Web · Network · Social · Roblox**
 
-[![Version](https://img.shields.io/badge/version-2.5.0-FF2020?style=for-the-badge&logo=semanticweb&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0)
+[![Version](https://img.shields.io/badge/version-2.6.0-FF2020?style=for-the-badge&logo=semanticweb&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0)
 [![Python](https://img.shields.io/badge/Python-3.11+-FF2020?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-AGPL--3.0-FF2020?style=for-the-badge)](Void/LICENSE)
 [![Stars](https://img.shields.io/github/stars/V0id-v2/Void-Tools-v2.0?color=FF2020&style=for-the-badge&logo=github&logoColor=white)](https://github.com/V0id-v2/Void-Tools-v2.0/stargazers)

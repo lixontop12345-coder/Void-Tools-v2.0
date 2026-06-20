@@ -1,13 +1,13 @@
 {
-  "config_rev": "6",
-  "latest_version": "2.5.0",
+  "config_rev": "7",
+  "latest_version": "2.6.0",
   "download_url": "https://github.com/V0id-v2/Void-Tools-v2.0/releases",
   "zip_url": "https://github.com/V0id-v2/Void-Tools-v2.0/archive/refs/heads/main.zip",
   "announcement": {
     "title_fr": "📱💬 TELEGRAM + DISCORD — REJOINS !",
     "title_en": "📱💬 TELEGRAM + DISCORD — JOIN!",
-    "body_fr": "La communauté VOID est de retour partout.\n\n🔴 **Telegram : t.me/v0idtool**\n🔴 **Discord : discord.gg/voidv2**\n\n◆ MAJ · support · tools VIP free\n◆ Les deux liens s'ouvrent au lancement\n◆ Void-Tools v2.5.0\n\n⭐ Ne rate rien !",
-    "body_en": "The VOID community is back everywhere.\n\n🔴 **Telegram: t.me/v0idtool**\n🔴 **Discord: discord.gg/voidv2**\n\n◆ Updates · support · free VIP tools\n◆ Both links open on startup\n◆ Void-Tools v2.5.0\n\n⭐ Don't miss out!"
+    "body_fr": "Void Selfbot intégré dans Void-Tools v2.6.0.\n\n🔴 **Telegram : t.me/v0idtool**\n🔴 **Discord : discord.gg/voidv2**\n\n◆ Catégorie SELFBOT · EN/FR fix · setup selfbot\n◆ discord.py-self installé via setup.bat\n\n⭐ Star le repo !",
+    "body_en": "Void Selfbot is now built into Void-Tools v2.6.0.\n\n🔴 **Telegram: t.me/v0idtool**\n🔴 **Discord: discord.gg/voidv2**\n\n◆ SELFBOT category · EN/FR fix · selfbot setup\n◆ discord.py-self via setup.bat\n\n⭐ Star the repo!"
   },
   "links": {
     "telegram": "https://t.me/v0idtool",
@@ -16,5 +16,5 @@
     "github": "https://github.com/V0id-v2/Void-Tools-v2.0",
     "shop": "https://discord.gg/voidv2"
   },
-  "changelog": "VOID-TOOLS v2.5.0\n- Discord reopened: discord.gg/voidv2 + Telegram t.me/v0idtool\n- Startup opens both Telegram and Discord automatically\n- HOME · manifest · webhooks · branding updated\n\nVOID-TOOLS v2.4.0\n- Community on Telegram t.me/v0idtool\n- Join screen on startup"
+  "changelog": "VOID-TOOLS v2.6.0\n- Void Selfbot integrated (SELFBOT category)\n- EN/FR language fix · selfbot deps in setup\n\nVOID-TOOLS v2.5.0\n- Discord reopened: discord.gg/voidv2 + Telegram t.me/v0idtool\n- Startup opens both Telegram and Discord automatically\n- HOME · manifest · webhooks · branding updated\n\nVOID-TOOLS v2.4.0\n- Community on Telegram t.me/v0idtool\n- Join screen on startup"
 }

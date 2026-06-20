@@ -74,7 +74,8 @@ if errorlevel 1 (
 )
 
 echo(
-echo   Installation des dependances...
+echo   Installation Void-Tools + Selfbot...
+"%PYEXE%" -m pip uninstall -y discord discord.py discord.py-self 2>nul
 "%PYEXE%" -m pip install -r "Void\requirements.txt"
 if errorlevel 1 (
   echo(
@@ -84,7 +85,21 @@ if errorlevel 1 (
 )
 
 echo(
-echo   OK - Dependances installees.
+echo   Verification discord.py-self...
+"%PYEXE%" -c "import discord; from discord.ext import commands; print('[OK] discord.py-self', discord.__version__)"
+if errorlevel 1 (
+  echo   [..] Reparation discord.py-self...
+  "%PYEXE%" -m pip install discord.py-self==2.1.0 --force-reinstall --no-cache-dir
+  "%PYEXE%" -c "import discord; from discord.ext import commands" >nul 2>&1
+  if errorlevel 1 (
+    echo   [ERREUR] discord.py-self casse. Utilise Python 3.11 ou 3.12.
+    pause
+    exit /b 1
+  )
+)
+
+echo(
+echo   OK - Dependances Void-Tools + Selfbot installees.
 echo   Lance Void-Tools avec start.bat
 echo(
 pause

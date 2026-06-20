@@ -6,7 +6,7 @@ REMOTE_MANIFEST_URL = (
     "https://raw.githubusercontent.com/V0id-v2/Void-Tools-v2.0/main/Void/config/remote-manifest.json"
 )
 
-VERSION = "2.5.0"
+VERSION = "2.6.0"
 GITHUB = "https://github.com/V0id-v2/Void-Tools-v2.0"
 STAR_GIF_URL = (
     "https://raw.githubusercontent.com/V0id-v2/Void-Tools-v2.0/main/Void/screenshots/star.PNG"
@@ -30,7 +30,12 @@ SETTINGS_PATH = os.path.join(CONFIG_DIR, "settings.json")
 NUKER_CFG_PATH = os.path.join(CONFIG_DIR, "discord-nuker.json")
 CUSTOM_TOOLS_DIR = os.path.join(VOID_DIR, "tools", "custom")
 
-CHANGELOG = """VOID-TOOLS v2.5.0
+CHANGELOG = """VOID-TOOLS v2.6.0
+- Void Selfbot intégré (catégorie SELFBOT · runtime bundlé)
+- Fix langue EN/FR · setup + discord.py-self pour selfbot
+- Gitignore renforcé (tokens · exports · config locale)
+
+VOID-TOOLS v2.5.0
 - Discord réouvert : discord.gg/voidv2 + Telegram t.me/v0idtool
 - Au lancement : ouverture auto Telegram ET Discord
 - HOME · manifest · branding · webhooks mis à jour
