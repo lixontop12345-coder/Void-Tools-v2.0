@@ -181,7 +181,6 @@ def build_pages_data(plugin_items=None):
             ("07", "Credits", T.tool_credits),
             ("08", "Setup Config", lambda: __import__("lib.setup", fromlist=["x"]).run_setup_wizard(force=True)),
             ("09", "Liens / MAJ", tool_remote_sync),
-            ("10", "Void Selfbot v2", lambda: run_selfbot()),
             ("Q", "Quit System", lambda: sys.exit(0)),
         ],
         "osint": [
